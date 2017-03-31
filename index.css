@@ -13,14 +13,19 @@ body {
 	background-color: #FFF;
 }
 
+fieldset {
+	border: none;
+}
+
 /* [ - - General Custom Classes - - ] */
 
 .area {
 	margin: 4px;
 	padding: 6px;
-	border: solid 2px #c1c1c1;
+	border: solid 6px #212121;
 	overflow: hidden;
-	background: #212121;
+	box-shadow: 6px 6px 2px #c1c1c1;
+	/*background: #212121;*/
 }
 
 .item {
