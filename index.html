@@ -1,0 +1,43 @@
+<!DOCTYPE HTMl>
+<html>
+<head>
+<title>Test</title>
+<style>
+@import url(index.css);
+@import url('https://fonts.googleapis.com/css?family=Merriweather');
+@import url('https://fonts.googleapis.com/css?family=Libre+Baskerville');
+@import url('https://fonts.googleapis.com/css?family=Enriqueta');
+</style>
+</head>
+<body onload="init(1);">
+
+<div id="wrapper">
+
+<div class="para">Test Form...</div>
+
+<form action="" name="info">
+	<fieldset>
+	[ Name ]<br>
+	<input id="i_name" type="text" name="firstname">
+	<br>
+	[ Size ]<br>
+	<!-- Custom Radio Button Experiment -->
+	<div class="rads" id="rads0">
+		<div class="rad rad_off" id="rad00" onclick="rad_activate(0, 0);">S</div>
+		<div class="rad rad_off" id="rad01" onclick="rad_activate(0, 1);">M</div>
+		<div class="rad rad_off" id="rad02" onclick="rad_activate(0, 2);">L</div>
+		<div class="rad rad_off" id="rad03" onclick="rad_activate(0, 3);">XL</div>
+	</div>
+	<br>
+	<input class="btn" onclick="return btn_submit();" class="sub" type="submit" value="ADD TO CART">
+	<span class="notif invalid_off" id="notif_invalid">Name is invalid...</span>
+	</fieldset>
+</form>
+
+</div>
+
+<!-- Import -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="index.js"></script>
+</body>
+</html>

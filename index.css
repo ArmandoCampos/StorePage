@@ -1,0 +1,102 @@
+/*
+	Armando Campos 2017
+*/
+
+body {
+	background-color: #FFF;
+	font-family: 'Libre Baskerville', serif;
+	font-size: 24px;
+}
+
+#wrapper {
+	margin: 10px;
+	background-color: #FFF;
+}
+
+/* [ - - General Custom Classes - - ] */
+
+.area {
+	margin: 4px;
+	padding: 6px;
+	border: solid 2px #c1c1c1;
+	overflow: hidden;
+	background: #212121;
+}
+
+.item {
+	float: left;
+	display: inline-block;
+	padding: 4px;
+}
+
+.centext {
+	text-align: center;
+}
+
+.divider {
+	color: #FFF;
+	margin: 20px;
+}
+
+.para {
+	font-size: 16px;
+}
+
+.sub {
+	font-family: 'Libre Baskerville', serif;
+	background-color: #FFF;
+	border-width: 2px;
+	border-color: #000;
+}
+
+.btn {
+	border: solid 4px #c1c1c1;
+	background: #FFF;
+	font-size: 24px;
+	color: #000;
+	transition: color 0.2s, background 0.2s, transform 0.2s;
+	border-radius: 8px;
+	transform: scale(1.0);
+}
+
+.btn:hover {
+	cursor: pointer;
+	color: #c1c1c1;
+	transform: scale(0.8);
+	background: #212121;
+	color: yellow;
+}
+
+/* - Notifications - */
+.notif {
+	transition: filter 0.2s, color 0.1s;
+}
+
+/* Invalid */
+.invalid_off {
+	color: #000;
+	filter: opacity(0%);
+}
+.invalid_on {
+	color: red;
+	filter: opacity(100%);
+}
+
+/* Custom Radio Buttons */
+.rads {
+
+}
+
+.rad {
+	transition: color 0.2s, transform 0.2s;
+}
+
+.rad_on {
+	color: #c1c1c1;
+	transform: scaleX(0.8);
+}
+
+.rad_off {
+	color: #000000;
+	transform: scaleX(1.0);
+}
