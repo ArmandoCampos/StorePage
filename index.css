@@ -50,11 +50,11 @@ body {
 }
 
 .btn {
-	border: solid 4px #c1c1c1;
+	border: solid 4px #757575;
 	background: #FFF;
 	font-size: 24px;
-	color: #000;
-	transition: color 0.2s, background 0.2s, transform 0.2s;
+	color: #212121;
+	transition: color 0.2s, background 0.2s, transform 0.2s, border 0.2s;
 	border-radius: 8px;
 	transform: scale(1.0);
 }
@@ -64,7 +64,9 @@ body {
 	color: #c1c1c1;
 	transform: scale(0.8);
 	background: #212121;
-	color: yellow;
+	color: #FFD740;
+	border-radius: 0px;
+	border-color: #BDBDBD;
 }
 
 /* - Notifications - */
@@ -88,15 +90,20 @@ body {
 }
 
 .rad {
-	transition: color 0.2s, transform 0.2s;
+	transition: filter 0.2s, transform 0.2s;
+	transform-origin: 0%;
+}
+
+.rad:hover{
+	cursor: pointer;
 }
 
 .rad_on {
-	color: #c1c1c1;
+	filter: brightness(1000%);
 	transform: scaleX(0.8);
 }
 
 .rad_off {
-	color: #000000;
+	filter: brightness(100%);
 	transform: scaleX(1.0);
 }

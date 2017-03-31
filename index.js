@@ -181,12 +181,17 @@ function rad_activate(rads_id, rad_id){
 // [ - - General Methods - - ]
 /**
 	* Get Element by use of ID.
-	* @param name ID of Element.
+	* @param {String} name ID of Element.
 */
 function getByID(name){
 	return document.getElementById(name);
 }
 
+/**
+	* Turn Element Class On.
+	* @param {String} el Element Name.
+	* @param {String} cc Class Name.
+*/
 function classOn(el, cc){
 	var elmnt = $('#'+String(el));
 	if(!elmnt.hasClass(cc)){
@@ -194,6 +199,11 @@ function classOn(el, cc){
 	}
 }
 
+/**
+	* Turn Element Class Off.
+	* @param {String} el Element Name.
+	* @param {String} cc Class Name.
+*/
 function classOff(el, cc){
 	var elmnt = $('#'+String(el));
 	if(elmnt.hasClass(cc)){
@@ -203,7 +213,7 @@ function classOff(el, cc){
 
 /**
 	* Get Random Integer.
-	* @param max Maximum Integer.
+	* @param {Number} max Maximum Integer.
 */
 function random_int(max){
 	return Math.floor(Math.random()*max);
