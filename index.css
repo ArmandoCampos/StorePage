@@ -91,24 +91,32 @@ fieldset {
 
 /* Custom Radio Buttons */
 .rads {
-
+	
 }
 
 .rad {
 	transition: filter 0.2s, transform 0.2s;
 	transform-origin: 0%;
+	float: left;
 }
 
-.rad:hover{
+.rad:hover {
 	cursor: pointer;
 }
 
 .rad_on {
-	filter: brightness(1000%);
-	transform: scaleX(0.8);
+	filter: brightness(80%);
 }
 
 .rad_off {
 	filter: brightness(100%);
-	transform: scaleX(1.0);
 }
+
+.rad_off:hover {
+	filter: brightness(120%);
+}
+
+.resize_m {
+	width: 120px;
+}
+
