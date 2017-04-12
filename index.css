@@ -90,6 +90,13 @@ fieldset {
 }
 
 /* Custom Radio Buttons */
+.additional {
+	font-family: 'Enriqueta', serif;
+	font-size: 16px;
+	color: #3e3e3e;
+	margin: 4px 0px;
+}
+
 .rads {
 	
 }
@@ -120,3 +127,26 @@ fieldset {
 	width: 120px;
 }
 
+.nav {
+	display: block;
+}
+
+.nav ul {
+	text-decoration: none;
+	list-style: none;
+	float: left;
+	margin: 0px;
+	padding: 10px;
+}
+
+.navb {
+	float: left;
+	padding: 0px 4px;
+	font-size: 16px;
+	transition: color 0.2s;
+}
+
+.navb:hover {
+	color: red;
+	cursor: pointer;
+}

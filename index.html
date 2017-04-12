@@ -1,29 +1,42 @@
 <!DOCTYPE HTMl>
 <html>
 <head>
-<title>Test</title>
+<title>Test Store Form</title>
 <style>
 @import url(index.css);
 @import url('https://fonts.googleapis.com/css?family=Merriweather');
 @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville');
 @import url('https://fonts.googleapis.com/css?family=Enriqueta');
 </style>
+<link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
+<link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="favicon-196x196.png" sizes="196x196">
 </head>
 <body onload="init(1);">
 
 <div id="wrapper">
 
-<div class="para centext">Test Form...</div>
+<div class="area" style="padding: 0px; margin: 6px 0px;">
+	<div class="nav">
+		<ul>
+			<li class="navb" onclick="navigate(0);">Home</li>
+			<li class="navb" onclick="navigate(1);">About</li>
+		</ul>
+	</div>
+</div>
 
-<div class="area">
+<div class="para centext">Test Store Form...</div>
+<div class="additional centext">Please Enter a Name and Select a Size...</div>
+
+<div class="area" style="padding: 0px;">
 <form action="" name="info">
 	<fieldset>
-	<div class="area">
+	<div class="area" style="margin: 0px;">
 	[ Name ]<br>
 	<input id="i_name" type="text" name="firstname">
 	</div>
 	<br>
-	<div class="area">
+	<div class="area" style="margin: 0px;">
 	[ Size ]<br>
 	<!-- Custom Radio Button Experiment -->
 	<div class="rads" id="rads0">

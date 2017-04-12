@@ -364,3 +364,17 @@ function notif_invalid(){
 	notif.toggleClass("invalid_off");
 	notif.toggleClass("invalid_on");
 }
+
+/*
+	NAVIGATION
+*/
+
+function navigate(pageID){
+	var path = "index.html";
+	switch(pageID){
+		case 0: break;
+		case 1: path = "about.html"; break;
+	}
+	// Go to Path
+	document.location.href = path;
+}
