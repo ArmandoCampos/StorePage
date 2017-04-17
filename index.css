@@ -47,6 +47,15 @@ fieldset {
 	font-size: 16px;
 }
 
+.hover {
+	transition: filter 0.2s;
+}
+
+.hover:hover {
+	filter: brightness(120%);
+	cursor: pointer;
+}
+
 .sub {
 	font-family: 'Libre Baskerville', serif;
 	background-color: #FFF;
@@ -112,7 +121,7 @@ fieldset {
 }
 
 .rad_on {
-	filter: brightness(80%);
+	filter: brightness(60%);
 }
 
 .rad_off {
@@ -125,6 +134,10 @@ fieldset {
 
 .resize_m {
 	width: 120px;
+}
+
+.resize_s {
+	width: 100px;
 }
 
 .nav {
@@ -149,4 +162,47 @@ fieldset {
 .navb:hover {
 	color: red;
 	cursor: pointer;
+}
+
+.form_on {
+
+}
+
+.form_off {
+	display: none;
+}
+
+.node_color {
+	padding: 2px 16px;
+	margin: 0px 2px;
+	border: 4px solid #c1c1c1;
+	border-radius: 10px;
+	transition: border-color 0.2s, border-radius 0.2s;
+	color: #FFF;
+}
+
+.node_color:hover {
+	border-color: #000;
+	border-radius: 0px;
+}
+
+
+.bg_red {
+	background-color: #F44336;
+}
+
+.bg_orange {
+	background-color: #FF6D00;
+}
+
+.bg_yellow {
+	background-color: #FFEB3B;
+}
+
+.bg_green {
+	background-color: #4CAF50;
+}
+
+.bg_blue {
+	background-color: #2196F3;
 }

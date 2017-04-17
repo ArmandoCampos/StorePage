@@ -211,6 +211,10 @@ function classOff(el, cc){
 	}
 }
 
+function imgChange(el, source){
+	getByID(el).src = source;
+}
+
 /**
 	* Get Random Integer.
 	* @param {Number} max Maximum Integer.
@@ -291,7 +295,8 @@ function set_text(id, text){
 // [ - - Initialize System - - ]
 var SYSTEM = {
 	ALARM: new alarm_system(6),
-	RADS:  [NONE]
+	RADS:  [NONE, NONE],
+	ITEM: NONE
 }
 
 /**
@@ -311,9 +316,9 @@ function update(){
 }
 
 /**
-	* Submit Button.
+	* Next Button.
 */
-function btn_submit(){
+function btn_nxt(){
 	var name = getByID("i_name").value;
 	var size = SYSTEM.RADS[0].find();//find_radio("size");
 	var notif = false;
@@ -349,10 +354,15 @@ function btn_submit(){
 		case 3: sz = "XLarge"; break;
 		case 4: sz = "2XLarge"; break;
 	}
-	alert("Name Submitted: "+name+", Size:"+sz);
-	// ...
-
+	// Reveal rest of Form
+	classOn("purchaseform", "form_on");
+	classOff("purchaseform", "form_off");
 	// Exit
+	return false;
+	//alert("Name Submitted: "+name+", Size:"+sz);
+}
+
+function btn_submit(){
 	return false;
 }
 
@@ -378,3 +388,45 @@ function navigate(pageID){
 	// Go to Path
 	document.location.href = path;
 }
+
+function btn_setitem(itemID){
+	SYSTEM.ITEM = itemID;
+	form_update();
+}
+
+function btn_form(){
+	document.location.href = "form.html";
+}
+
+function form_update(){
+	switch(SYSTEM.ITEM){
+		case NONE:
+			classOn("storeform", "form_off");
+			classOff("storeform", "form_on");
+			break;
+		case 0:
+		case 1:
+			classOn("storeform", "form_on");
+			classOff("storeform", "form_off");
+			// Update Images
+			for(var i = 0; i < 5; i++){
+				imgChange("ishirt"+String(i), "assets/shirtsketch"+String(SYSTEM.ITEM)+".png");
+			}
+			break;
+	}
+}
+
+/*
+	Page Layout:
+	X- Navigation
+	X- Item Selection
+	- Selection Form {
+		- Color Selection
+		X- Size Selection
+		X- Next Button
+		- Purchase Form {
+			- 
+			X- Submit Button
+		}
+	}
+*/
