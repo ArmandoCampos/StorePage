@@ -111,7 +111,7 @@ fieldset {
 }
 
 .rad {
-	transition: filter 0.2s, transform 0.2s;
+	transition: transform 0.2s, background-color 0.2s;
 	transform-origin: 0%;
 	float: left;
 }
@@ -121,15 +121,15 @@ fieldset {
 }
 
 .rad_on {
-	filter: brightness(60%);
+	background-color: #c1c1c1;
 }
 
 .rad_off {
-	filter: brightness(100%);
+
 }
 
 .rad_off:hover {
-	filter: brightness(120%);
+	background-color: #e0e0e0;
 }
 
 .resize_m {
@@ -177,15 +177,24 @@ fieldset {
 	margin: 0px 2px;
 	border: 4px solid #c1c1c1;
 	border-radius: 10px;
-	transition: border-color 0.2s, border-radius 0.2s;
+	transition: border-color 0.2s, border-radius 0.2s, transform 0.2s;
 	color: #FFF;
 }
 
 .node_color:hover {
 	border-color: #000;
 	border-radius: 0px;
+	transform: scaleY(1.2);
 }
 
+.rad_on > .node_color {
+	border-color: #000;
+	transform: scaleY(1.2);
+}
+
+.bg_white {
+	background-color: #FFFFFF;
+}
 
 .bg_red {
 	background-color: #F44336;

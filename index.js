@@ -321,20 +321,63 @@ function update(){
 function btn_nxt(){
 	var name = getByID("i_name").value;
 	var size = SYSTEM.RADS[0].find();//find_radio("size");
+	var color = SYSTEM.RADS[1].find();
 	var notif = false;
+	var msg = NONE;
 	if(name.length == 0){
 		// Trigger Notification
 		notif = true;
-		set_text("notif_invalid", "Name is invalid...");
+		msg = 0;
 	}
 	if(size == undefined){
 		// Trigger Notification
 		notif = true;
 		if(name.length == 0){
-			set_text("notif_invalid", "Name and Size is invalid...");
+			msg = 2;
 		}else{
-			set_text("notif_invalid", "Size is invalid...");
+			msg = 1;
 		}
+	}
+	if(color == undefined){
+		// Trigger Notification
+		notif = true;
+		if(name.length == 0){
+			if(size == undefined){
+				msg = 6;
+			}else{
+				msg = 4;
+			}
+		}else{
+			if(size == undefined){
+				msg = 5;
+			}else{
+				msg = 3;
+			}
+		}
+	}
+	switch(msg){
+		case NONE: break;
+		case 0: // Name
+			set_text("notif_invalid", "Name is invalid...");
+			break;
+		case 1: // Size
+			set_text("notif_invalid", "Size is invalid...");
+			break;
+		case 2: // Name and Size
+			set_text("notif_invalid", "Name and Size is invalid...");
+			break;
+		case 3: // Color
+			set_text("notif_invalid", "Color is invalid...");
+			break;
+		case 4: // Name and Color
+			set_text("notif_invalid", "Name and Color is invalid...");
+			break;
+		case 5: // Size and Color
+			set_text("notif_invalid", "Size and Color is invalid...");
+			break;
+		case 6: // Name, Size, and Color
+			set_text("notif_invalid", "Name, Size, and Color is invalid...");
+			break;
 	}
 	if(notif){
 		// Notification: Invalid.
@@ -360,6 +403,25 @@ function btn_nxt(){
 	// Exit
 	return false;
 	//alert("Name Submitted: "+name+", Size:"+sz);
+}
+
+function rad_color_get(colorID){
+	// Returns string of color name
+	var name = "white";
+	switch(colorID){
+		case 0: name = "white"; break;
+		case 1: name = "red"; break;
+		case 2: name = "orange"; break;
+		case 3: name = "yellow"; break;
+		case 4: name = "green"; break;
+		case 5: name = "blue"; break;
+	}
+	return name;
+}
+
+function node_color_activate(radsID, radID){
+	rad_activate(radsID, radID);
+	form_update();
 }
 
 function btn_submit(){
@@ -410,7 +472,7 @@ function form_update(){
 			classOff("storeform", "form_off");
 			// Update Images
 			for(var i = 0; i < 5; i++){
-				imgChange("ishirt"+String(i), "assets/shirtsketch"+String(SYSTEM.ITEM)+".png");
+				imgChange("ishirt"+String(i), "assets/shirtsketch"+String(SYSTEM.ITEM)+String(rad_color_get(SYSTEM.RADS[1].find()))+".png");
 			}
 			break;
 	}
