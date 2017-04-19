@@ -178,6 +178,10 @@ function rad_activate(rads_id, rad_id){
 	rads.set(rad_id);
 }
 
+function rad_default(rads_id, rad_id){
+	rad_activate(rads_id, rad_id);
+}
+
 // [ - - General Methods - - ]
 /**
 	* Get Element by use of ID.
@@ -319,12 +323,12 @@ function update(){
 	* Next Button.
 */
 function btn_nxt(){
-	var name = getByID("i_name").value;
 	var size = SYSTEM.RADS[0].find();//find_radio("size");
 	var color = SYSTEM.RADS[1].find();
+	var quant = SYSTEM.RADS[2].find();
 	var notif = false;
 	var msg = NONE;
-	if(name.length == 0){
+	if(quant == undefined){
 		// Trigger Notification
 		notif = true;
 		msg = 0;
@@ -332,7 +336,7 @@ function btn_nxt(){
 	if(size == undefined){
 		// Trigger Notification
 		notif = true;
-		if(name.length == 0){
+		if(quant == undefined){
 			msg = 2;
 		}else{
 			msg = 1;
@@ -341,7 +345,7 @@ function btn_nxt(){
 	if(color == undefined){
 		// Trigger Notification
 		notif = true;
-		if(name.length == 0){
+		if(quant == undefined){
 			if(size == undefined){
 				msg = 6;
 			}else{
@@ -358,25 +362,25 @@ function btn_nxt(){
 	switch(msg){
 		case NONE: break;
 		case 0: // Name
-			set_text("notif_invalid", "Name is invalid...");
+			set_text("notif_invalid", "Quantity is invalid...");
 			break;
 		case 1: // Size
 			set_text("notif_invalid", "Size is invalid...");
 			break;
 		case 2: // Name and Size
-			set_text("notif_invalid", "Name and Size is invalid...");
+			set_text("notif_invalid", "Quantity and Size is invalid...");
 			break;
 		case 3: // Color
 			set_text("notif_invalid", "Color is invalid...");
 			break;
 		case 4: // Name and Color
-			set_text("notif_invalid", "Name and Color is invalid...");
+			set_text("notif_invalid", "Quantity and Color is invalid...");
 			break;
 		case 5: // Size and Color
 			set_text("notif_invalid", "Size and Color is invalid...");
 			break;
 		case 6: // Name, Size, and Color
-			set_text("notif_invalid", "Name, Size, and Color is invalid...");
+			set_text("notif_invalid", "Quantity, Size, and Color is invalid...");
 			break;
 	}
 	if(notif){
@@ -400,6 +404,7 @@ function btn_nxt(){
 	// Reveal rest of Form
 	classOn("purchaseform", "form_on");
 	classOff("purchaseform", "form_off");
+	classOn("b_nxt", "hide");
 	// Exit
 	return false;
 	//alert("Name Submitted: "+name+", Size:"+sz);
@@ -483,7 +488,7 @@ function form_update(){
 	X- Navigation
 	X- Item Selection
 	- Selection Form {
-		- Color Selection
+		X- Color Selection
 		X- Size Selection
 		X- Next Button
 		- Purchase Form {

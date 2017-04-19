@@ -12,7 +12,7 @@
 <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
 <link rel="icon" type="image/png" href="favicon-196x196.png" sizes="196x196">
 </head>
-<body onload="init(2);">
+<body onload="init(3); rad_default(0, 0); rad_default(1, 0); rad_default(2, 0);">
 
 <div id="wrapper">
 
@@ -40,11 +40,6 @@
 <form action="" name="info">
 	<fieldset>
 	<div class="area" style="margin: 0px;">
-	[ Name ]<br>
-	<input id="i_name" type="text" name="firstname">
-	</div>
-	<br>
-	<div class="area" style="margin: 0px;">
 	[ Size ]<br>
 	<!-- Custom Radio Button Experiment -->
 	<div class="rads" id="rads0">
@@ -67,11 +62,29 @@
 		<div class="rad rad_off" id="rad15" onclick="node_color_activate(1, 5);"><div class="node_color bg_blue">.</div></div>
 	</div>
 	</div>
+	<div class="area" style="margin: 0px;">
+	[ Quantity ]<br>
+	<!--<input id="i_quant" type="text" name="quantity">-->
+	<div class="rads" id="rads2">
+		<div class="rad rad_off" id="rad20" onclick="node_color_activate(2, 0);"><div class="node_color bg_white">1</div></div>
+		<div class="rad rad_off" id="rad21" onclick="node_color_activate(2, 1);"><div class="node_color bg_white">2</div></div>
+		<div class="rad rad_off" id="rad22" onclick="node_color_activate(2, 2);"><div class="node_color bg_white">3</div></div>
+		<div class="rad rad_off" id="rad23" onclick="node_color_activate(2, 3);"><div class="node_color bg_white">5</div></div>
+		<div class="rad rad_off" id="rad24" onclick="node_color_activate(2, 4);"><div class="node_color bg_white">9</div></div>
+		<div class="rad rad_off" id="rad25" onclick="node_color_activate(2, 5);"><div class="node_color bg_white">12</div></div>
+		<div class="rad rad_off" id="rad26" onclick="node_color_activate(2, 6);"><div class="node_color bg_white">Custom</div></div>
+	</div>
+	</div>
 	<br>
-	<input class="btn" onclick="return btn_nxt();" class="nxt" type="submit" value="NEXT">
+	<input id="b_nxt" class="btn" onclick="return btn_nxt();" type="submit" value="NEXT">
 	<span class="notif invalid_off" id="notif_invalid">Name is invalid...</span>
 
 	<div id="purchaseform" class="form_off">
+	<div class="area" style="margin: 0px;">
+	[ Name ]<br>
+	<input id="i_name" type="text" name="firstname">
+	</div>
+	<div class="divider">...</div>
 	<input class="btn" onclick="return btn_submit();" class="sub" type="submit" value="ADD TO CART">
 	<span class="notif invalid_off" id="notif_invalidsub">please fill all required fields...</span>
 	</div>
