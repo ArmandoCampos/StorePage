@@ -1,507 +1,1240 @@
 /*
-	Armando Campos
-	3/21/17 - 3/31/17
+Armando Campos
+4/18/17
 */
 // Constants
-const NONE = -1;
+const NONE = -1, TILE_SIZE = 64;
 
-/**
-	* Alarms, used for delayed events.
-*/
-class alarm {
-	constructor(){
-		this.time = NONE;
-		this.func = NONE;
-		this.param = NONE;
-	}
+var container = document.getElementById('container');
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d');
 
-	update(){
-		this.tick();
-		this.check();
-	}
+// [ - - Input - - ]
+var Key = {
+  _pressed: {},
+  i_p: {},
 
-	tick(){
-		if(this.time != NONE){
-			this.time = this.time - 1;
-		}
-	}
+  LEFT: 37,
+  UP: 38,
+  RIGHT: 39,
+  DOWN: 40,
+  A: 65,
+  D: 68,
+  S: 83,
+  W: 87,
+  T: 84,
+  SPACE: 32,
+  
+  isDown: function(keyCode) {
+    return this._pressed[keyCode];
+  },
 
-	check(){
-		if(valid(this.time)){
-			if(this.time == 0){
-				// Execute Function
-				if(this.param == NONE){
-					this.func();
-				}else{
-					this.func(this.param);
-				}
-				this.reset();
-			}
-		}
-	}
+  isPressed: function(keyCode){
+    return this.i_p[keyCode];
+  },
+  
+  onKeydown: function(event) {
+    if(!this.isDown(event.keyCode)){
+      this.i_p[event.keyCode] = true;
+    }else{
+      delete this.i_p[event.keyCode];
+    }
+    this._pressed[event.keyCode] = true;
+  },
+  
+  onKeyup: function(event) {
+    delete this._pressed[event.keyCode];
+    delete this.i_p[event.keyCode];
+  }
+};
 
-	set(time, func, param){
-		this.time = time;
-		this.func = func;
-		this.param = param;
-	}
-
-	reset(){
-		this.time = NONE;
-		this.func = NONE;
-		this.param = NONE;
-	}
-}
-
-/**
-	* Alarm System, controls alarms.
-*/
-class alarm_system {
-	constructor(num){
-		this.alarms = [NONE];
-		for(var i = 0; i < num; i++){
-			this.alarms.push(new alarm());
-		}
-	}
-
-	get_alarm(aID){
-		return this.alarms[aID];
-	}
-
-	update(){
-		// Update all Alarms
-		for(var i = 0; i < this.alarms.length; i++){
-			var alrm = this.get_alarm(i);
-			if(alrm != NONE){
-				// Alarm Exists
-				alrm.update();
-			}
-		}
-	}
-
-	// Add to Specific Position
-	set(aID, time, func, param){
-		this.get_alarm(aID).set(time, func, param);
-	}
-
-	// Add to Unknown Position
-	// Not recommended if using Specifics
-	add(time, func, param){
-		var open = 0;
-		for(var i = 0; i < this.alarms.length; i++){
-			var alrm = this.get_alarm(i);
-			if(alrm != NONE){
-				// Alarm Exists
-				if(alrm.time == NONE)open = i;
-			}
-		}
-		// Set Alarm
-		this.get_alarm(open).set(time, func, param);
-	}
-
-	wipe(){
-		for(var i = 0; i < this.alarms.length; i++){
-			var alrm = this.get_alarm(i);
-			if(alrm != NONE){
-				// Alarm Exists
-				alrm.reset();
-			}
-		}
-	}
-}
-
-// Custom Radio Buttons
-class rad {
-	constructor(index){
-		this.index = index;
-		this.activated = false;
-	}
-
-	get active(){
-		return this.activated;
-	}
-}
-
-class rads {
-	constructor(rID, num){
-		this.rID = rID;
-		this.num = num;
-		this.radios = [];
-		for(var i = 0; i < num; i++){
-			//alert("in loop"+i);
-			this.radios.push(new rad(i));
-		}
-	}
- 
-	all_inactive(){
-		for(var i = 0; i < this.num; i++){
-			if(this.radios[i].active())return false;
-		}
-		return true;
-	}
-
-	set(rad_id){
-		this.radios[rad_id].activated = true;
-		var rr = "rad"+String(this.rID)+String(rad_id);
-		classOn(rr, "rad_on");
-		classOff(rr, "rad_off");
-	}
-
-	reset_all(){
-		for(var i = 0; i < this.num; i++){
-			this.radios[i].activated = false;
-			var rr = "rad"+String(this.rID)+String(i);
-			classOn(rr, "rad_off");
-			classOff(rr, "rad_on");
-		}
-	}
-
-	find(){
-		for(var i = 0; i < this.num; i++){
-			if(this.radios[i].active)return i;
-		}
-		return undefined;
-	}
-}
-
-function rads_add(numrads){
-	for(var i = 0; i < numrads; i++){
-		var rnum = getByID('rads'+i).childElementCount;
-		SYSTEM.RADS[i] = new rads(i, rnum);
-		//alert("created rads:"+i);
-	}
-}
-
-function rad_activate(rads_id, rad_id){
-	var rads = SYSTEM.RADS[rads_id];
-	rads.reset_all();
-	rads.set(rad_id);
-}
-
-function rad_default(rads_id, rad_id){
-	rad_activate(rads_id, rad_id);
-}
+document.addEventListener('keyup', function(event) { Key.onKeyup(event); }, false);
+document.addEventListener('keydown', function(event) { Key.onKeydown(event); }, false);
 
 // [ - - General Methods - - ]
 /**
-	* Get Element by use of ID.
-	* @param {String} name ID of Element.
+  * Get Element by use of ID.
+  * @param name ID of Element.
 */
 function getByID(name){
-	return document.getElementById(name);
+  return document.getElementById(name);
+}
+
+function getElWidth(name){
+  var post = getByID(name).getBoundingClientRect();
+  return post.width;
+}
+function getElHeight(name){
+  var post = getByID(name).getBoundingClientRect();
+  return post.height;
 }
 
 /**
-	* Turn Element Class On.
-	* @param {String} el Element Name.
-	* @param {String} cc Class Name.
-*/
-function classOn(el, cc){
-	var elmnt = $('#'+String(el));
-	if(!elmnt.hasClass(cc)){
-		elmnt.toggleClass(cc);
-	}
-}
-
-/**
-	* Turn Element Class Off.
-	* @param {String} el Element Name.
-	* @param {String} cc Class Name.
-*/
-function classOff(el, cc){
-	var elmnt = $('#'+String(el));
-	if(elmnt.hasClass(cc)){
-		elmnt.toggleClass(cc);
-	}
-}
-
-function imgChange(el, source){
-	getByID(el).src = source;
-}
-
-/**
-	* Get Random Integer.
-	* @param {Number} max Maximum Integer.
+  * Get Random Integer.
+  * @param max Maximum Integer.
 */
 function random_int(max){
-	return Math.floor(Math.random()*max);
+  return Math.floor(Math.random()*max);
+}
+
+function slide_into(base, dest, spd){
+  var dif = Math.abs(dest - base);
+  if(dif < spd)return dest;
+  var dir = sign(dest - base);
+  return base+(dir*spd);
+}
+
+function sign(value){
+  if(value == 0)return 0;
+  if(value > 0){
+    return 1;
+  }else{
+    return -1;
+  }
+}
+
+function bool_sub(b1, b2){
+  if(b1){
+    if(b2)return 0;
+    return 1;
+  }else{
+    if(b2)return -1;
+    return 0;
+  }
+}
+
+function inRange(value, min, max){
+  return (value >= Math.min(min, max)) && (value <= Math.max(min, max));
+}
+
+function rangeIntersect(min0, max0, min1, max1){
+  return (Math.max(min0, max0) >= Math.min(min1, max1)) && (Math.min(min0, max0) <= Math.max(min1, max1));
+}
+
+function rectIntersect(msk0, msk1){
+  return (rangeIntersect(msk0.left, msk0.right, msk1.left, msk1.right)) &&
+  (rangeIntersect(msk0.up, msk0.down, msk1.up, msk1.down));
 }
 
 /**
-	* Check if a Value is defined.
-	* @param value Value to Check.
+  * Check if a Value is defined.
+  * @param value Value to Check.
 */
 function valid(value){
-	return (value != NONE);
+  return (value != NONE);
 }
 
 /**
-	* Remove Random Value from Array. Warning, Will not check for remaining values.
-	* @param array Array to remove value from.
+  * Remove Random Value from Array. Warning, Will not check for remaining values.
+  * @param array Array to remove value from.
 */
 function array_random_removal(array){
-	var length = array.length;
-	var pos = random_int(length);
-	var val = array[pos];
-	while(val == NONE){
-		pos = random_int(length);
-		val = array[pos];
-	}
-	array[pos] = NONE;
-	return val;
+  var length = array.length;
+  var pos = random_int(length);
+  var val = array[pos];
+  while(val == NONE){
+    pos = random_int(length);
+    val = array[pos];
+  }
+  array[pos] = NONE;
+  return val;
 }
 
 /**
-	* Convert entire array into a String.
-	* @param array Array to convert into String.
+  * Convert entire array into a String.
+  * @param array Array to convert into String.
 */
 function array_write(array){
-	var str = "[";
-	for(var i = 0; i < array.length; i++){
-		var ext = ", ";
-		if(i == array.length-1)ext = "]";
-		str+=String(array[i])+ext;
-	}
-	return str;
+  var str = "[";
+  for(var i = 0; i < array.length; i++){
+    var ext = ", ";
+    if(i == array.length-1)ext = "]";
+    str+=String(array[i])+ext;
+  }
+  return str;
 }
-
 /**
-	* Convert entire 2D array into a String.
-	* @param array Array to convert into String.
+  * Convert entire 2D array into a String.
+  * @param array Array to convert into String.
 */
 function array_write2D(array){
-	var str = "[";
-	for(var i = 0; i < array.length; i++){
-		var ext = ", ";
-		if(i == array.length-1)ext = "]";
-		str+=array_write(array[i])+ext;
-	}
-	return str;
+  var str = "[";
+  for(var i = 0; i < array.length; i++){
+    var ext = ", ";
+    if(i == array.length-1)ext = "]";
+    str+=array_write(array[i])+ext;
+  }
+  return str;
 }
 
 /**
-	* Retrieve Radio Button Selection.
+  * Alarms, used for delayed events.
 */
-function find_radio(field){
-	var radios = document.getElementsByName(field);
+class alarm {
+  constructor(){
+    this.time = NONE;
+    this.func = NONE;
+    this.param = NONE;
+  }
 
-	//'document.'+form+'.'+field;
-	for(var i = 0; i < radios.length; i++){
-		if(radios[i].checked)return radios[i].value;
-	}
-}
+  update(){
+    this.tick();
+    this.check();
+  }
 
-function set_text(id, text){
-	getByID(id).innerHTML = text;
-}
+  tick(){
+    if(this.time != NONE){
+      this.time = this.time - 1;
+    }
+  }
 
-// - - - - - - - - - - - - - - - - - - -
-// [ - - Initialize System - - ]
-var SYSTEM = {
-	ALARM: new alarm_system(6),
-	RADS:  [NONE, NONE],
-	ITEM: NONE
+  check(){
+    if(valid(this.time)){
+      if(this.time == 0){
+        // Execute Function
+        if(this.param == NONE){
+          this.func();
+        }else{
+          this.func(this.param);
+        }
+        this.reset();
+      }
+    }
+  }
+
+  set(time, func, param){
+    this.time = time;
+    this.func = func;
+    this.param = param;
+  }
+
+  reset(){
+    this.time = NONE;
+    this.func = NONE;
+    this.param = NONE;
+  }
 }
 
 /**
-	* Initialize Events.
+  * Alarm System, controls alarms.
 */
-function init(numrads){
-	this.interval = setInterval(update, 60);
-	//alert("hey");
-	rads_add(numrads);
+class alarm_system {
+  constructor(num){
+    this.alarms = [NONE];
+    for(var i = 0; i < num; i++){
+      this.alarms.push(new alarm());
+    }
+  }
+
+  get_alarm(aID){
+    return this.alarms[aID];
+  }
+
+  update(){
+    // Update all Alarms
+    for(var i = 0; i < this.alarms.length; i++){
+      var alrm = this.get_alarm(i);
+      if(alrm != NONE){
+        // Alarm Exists
+        alrm.update();
+      }
+    }
+  }
+
+  // Add to Specific Position
+  set(aID, time, func, param){
+    this.get_alarm(aID).set(time, func, param);
+  }
+
+  // Add to Unknown Position
+  // Not recommended if using Specifics
+  add(time, func, param){
+    var open = 0;
+    for(var i = 0; i < this.alarms.length; i++){
+      var alrm = this.get_alarm(i);
+      if(alrm != NONE){
+        // Alarm Exists
+        if(alrm.time == NONE)open = i;
+      }
+    }
+    // Set Alarm
+    this.get_alarm(open).set(time, func, param);
+  }
+
+  wipe(){
+    for(var i = 0; i < this.alarms.length; i++){
+      var alrm = this.get_alarm(i);
+      if(alrm != NONE){
+        // Alarm Exists
+        alrm.reset();
+      }
+    }
+  }
+}
+
+class Slide {
+  // Value that slides into destination
+  constructor(base, dest, spd){
+    this.base = base;
+    this.dest = dest;
+    this.spd = spd;
+    this.dir = 1;
+  }
+
+  update(){
+    this.dir = sign(this.dest - this.base);
+    this.base += this.dir*this.spd;
+    if(this.dir == 1){
+      if(this.base >= this.dest){
+        this.dir = 0;
+        this.base = this.dest;
+      }
+    }else if(this.dir == -1){
+      if(this.base <= this.dest){
+        this.dir = 0;
+        this.base = this.dest;
+      }
+    }
+  }
+}
+
+class Mask {
+  constructor(xx, yy, width, height){
+    this.x = xx;
+    this.y = yy;
+    this.ww = width;
+    this.hh = height;
+    this.hlfw = width/2;
+    this.hlfh = height/2;
+    this.update(xx, yy);
+  }
+
+  update(xx, yy){
+    this.x = xx;
+    this.y = yy;
+    this.left = this.x - this.hlfw;
+    this.right = this.x + this.hlfw;
+    this.up = this.y - this.hlfh;
+    this.down = this.y + this.hlfh;
+  }
+}
+
+// Camera
+class Camera {
+  constructor(Entity){
+    this.follow = Entity;
+    this.x = 0;
+    this.y = 0;
+  }
+
+  update(){
+    if(this.follow != NONE){
+      // Follow Abstract Entity
+      this.x = this.follow.x;
+      this.y = this.follow.y;
+    }
+  }
+}
+
+// Entity Classes
+class AbstractEntity {
+  constructor(type, xx, yy){
+    this.type = type;
+    var sz = TILE_SIZE;
+    if(this.type == 0){
+        sz = TILE_SIZE/2;
+        //GAME.player = this;
+    }
+    this.home = {x: xx, y: yy};
+    this.post = { x: xx, y : yy };
+    this.vel = { h: 0, v : 0 };
+    this.msk = new Mask(xx, yy, sz, sz);
+    this.spd = 4*(sz/32);
+    this.color = "tomato";
+    // Physics
+    this.hface = 1;
+    this.onground = false;
+    this.onwall = false;
+    this.onwallB = false;
+    this.cling = false;
+    // Player
+    this.stamina_max = 8;
+    this.stamina = this.stamina_max;
+    this.input_set(1);
+    this.score = 0;
+    this.faceangle = 0;
+    this.batangle = 0;
+    this.batswing = false;
+    this.batslide = new Slide(0, 0, 30);
+  }
+  // Get
+  get side_l(){
+    return this.msk.left;
+  }
+  get side_r(){
+    return this.msk.right;
+  }
+  get side_u(){
+    return this.msk.up;
+  }
+  get side_d(){
+    return this.msk.down;
+  }
+
+  // Set
+  setPost(xx, yy){
+    this.post.x = xx;
+    this.post.y = yy;
+  }
+
+  // should probably use deltatime instead but oh well
+  // Physics
+  gravity(){
+    var weight = 0.5;
+    if(this.onwall){
+      weight = 0.1;
+      if(this.vel.v < 0)this.vel.v = 0;
+    }
+    if(this.cling){
+      weight = 0;
+      if(!this.onwall){
+        // Underneath
+        this.vel.v = -2;
+      }else{
+        this.vel.v = 0;
+      }
+    }
+    this.vel.v += weight;
+    if(this.vel.v >= 9)this.vel.v = 9;
+  }
+
+  boundcheck(){
+    var half = TILE_SIZE/2
+    if(this.side_l > canvas.width)this.post.x = -half;
+    if(this.side_r < -half)this.post.x = canvas.width;//getElWidth("canvas");
+    if(this.side_u > canvas.height)this.post.y = -half;
+    if(this.side_d < -half)this.post.y = canvas.height+half;//getElHeight("canvas");
+  }
+
+  stamina_charge(){
+    this.stamina += 0.5;
+    if(this.stamina > this.stamina_max)this.stamina = this.stamina_max;
+  }
+
+  stamina_use(cost){
+    if(this.stamina >= cost){
+      // Use
+      this.stamina -= cost;
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  set_home(xx, yy){
+    this.home.x = xx;
+    this.home.y = yy;
+  }
+
+  reset(){
+    this.post.x = this.home.x;
+    this.post.y = this.home.y;
+    this.vel.x = 0;
+    this.vel.y = 0;
+    this.msk.update(this.post.x, this.post.y);
+    this.stamina = this.stamina_max;
+    //instance_create(9, this.post.x, this.post.y);
+  }
+
+  input_set(inpID){
+    this.input = [Key.D, Key.A, Key.D, Key.W, Key.T];
+    if(inpID == 1){
+      this.input = [Key.RIGHT, Key.LEFT, Key.DOWN, Key.UP], Key.SPACE;
+    }
+  }
+
+  // Update
+  update(){
+    // Swing Slide
+    this.batslide.update();
+    // Physics
+    //this.gravity();
+    var ir = Key.isDown(this.input[0]), il = Key.isDown(this.input[1]);
+    var id = Key.isDown(this.input[2]), iu = Key.isDown(this.input[3]);
+    var isp = Key.isPressed(this.input[4]);
+    var hdir = bool_sub(ir, il), vdir = bool_sub(id, iu);
+
+    // Turn
+    this.faceangle = slide_into(this.faceangle, this.faceangle+(hdir*10), 12);
+
+    // Forward
+    if(iu){
+      this.vel.h = slide_into(this.vel.h, lengthdir_x(6, degToRad(this.faceangle)), 1);
+      this.vel.v = slide_into(this.vel.v, lengthdir_y(6, degToRad(this.faceangle)), 1);
+      // Spawn Dust Effect
+      var fang = degToRad(this.faceangle);
+      var dstx = this.post.x, dsty = this.post.y;
+      instance_add(11, dstx, dsty);
+    }else{
+      this.vel.h = slide_into(this.vel.h, 0, 1);
+      this.vel.v = slide_into(this.vel.v, 0, 1);
+    }
+
+    if(isp){
+      // Swing
+      if(this.stamina > 4){
+        if(this.batslide.base == this.batslide.dest){
+          this.stamina_use(4);
+          if(this.batslide.dest == 0){
+            this.batslide.dest = -140;
+          }else{
+            this.batslide.dest = 0;
+          }
+          // Spawn Hitbox
+          var fang = degToRad(this.faceangle);
+          var nx = this.post.x+(this.vel.h*this.spd), ny = this.post.y+(this.vel.v*this.spd);
+          var hitx = nx+(lengthdir_x(96, fang)), hity = ny+(lengthdir_y(96, fang));
+          instance_add(10, hitx, hity);
+          // Spawn Wave
+          var wave = instance_add(12, hitx, hity);
+          wave.ang = fang;
+        }
+      }
+    }else{
+      this.stamina_charge();
+    }
+    this.batangle = this.batslide.base;
+    /*
+    if(this.onground){
+      // Jumping
+      if(iu){
+        this.vel.v = -4;
+      }
+      // Stamina
+      this.stamina_charge();
+    }
+    if(this.onwall){
+      if(iu){
+        if(this.stamina_use(1)){
+          this.vel.v = -3;
+          this.vel.h = -this.hface*2;
+        }
+      }
+    }
+    */
+    var ox = this.post.x, oy = this.post.y;
+    var nx = this.post.x + (this.vel.h*this.spd);
+    var ny = this.post.y + (this.vel.v*this.spd);
+    this.msk.update(nx, ny);
+    var hs = this.vel.h;
+    var vs = this.vel.v;
+    var forceh = 0, forcev = 0;
+    this.onground = false;
+    this.onwallB = false;
+    this.onwall = false;
+    this.cling = false;
+    // COLLISION CHECK
+    var grid = GAME.INSTANCES;
+    var gridw = grid.length;
+    for(var i = 0; i < gridw; i++){
+      var inst = grid[i];
+      if(inst != NONE){
+        var type = inst.type;
+        // Collision
+        switch(type){
+          case 0: // Players
+          case 1: // Wall
+          case 2: // StickyWall
+          case 3: // BouncyWall
+          case 4: // SpeedWall
+          case 5: // SlickWall
+          case 6: // DangerWall
+          case 7: // CheckPoint
+            var ix = inst.post.x, iy = inst.post.y;
+            var disx = Math.abs(ix - this.post.x);
+            var dirx = sign(ix - this.post.x);
+            var colh = false;
+
+            var disy = Math.abs(iy - this.post.y);
+            var diry = sign(iy - this.post.y);
+            var affect = true;
+            switch(type){
+              case 0:
+              case 7: affect = false; break;
+            }
+            // Within Range
+            if((disx <= TILE_SIZE*2)&&(disy <= TILE_SIZE*2)){
+              // VERTICAL
+              this.msk.update(ox, ny);
+              if(this.place_meeting(inst)){
+                this.msk.update(ox, oy);
+                if(affect)this.vel.v = 0;
+                switch(type){
+                  case 3: // BOUNCYWALL
+                    if(Math.abs(vs) < 4)vs *= Math.sign(vs)*4;
+                    forcev = (vs*-2);
+                    break;
+                  case 6: // DANGERWALL
+                    this.reset();
+                    break;
+                  case 7:
+                    this.set_home(inst.post.x, inst.post.y);
+                    break;
+                }
+                if(affect)vs = 0;
+                if(diry == 1){
+                  this.onground = true;
+                  switch(type){
+                    case 4: // SPEEDWALL
+                      forceh = (hs*1.4);
+                      break;
+                    case 0: // PLAYERS
+                    forcev = (vs*-2);
+                      inst.reset();
+                      this.score++;
+                      break;
+                  }
+                  // Player hits top side of
+                  if(affect)this.post.y = -1+inst.side_u-this.msk.hlfh;
+                }else{
+                  this.onwallB = true;
+                  switch(type){
+                    case 2: // STICKYWALL
+                      this.cling = true;
+                      this.stamina_charge();
+                      break;
+                  }
+                  // Player hits bottom side of
+                  if(affect)this.post.y = 1+inst.side_d+this.msk.hlfh;
+                }
+                if(affect){
+                  ny = this.post.y;
+                  this.msk.update(nx, oy);
+                }
+              }
+
+              this.msk.update(nx, oy);
+              if(this.place_meeting(inst)){
+                this.msk.update(ox, oy);
+                // HORIZONTAL
+                if(affect){
+                  this.vel.h = 0;
+                  this.onwall = true;
+                }
+                switch(type){
+                  case 2: // STICKYWALL
+                    this.cling = true;
+                    this.stamina_charge();
+                    break;
+                  case 3: // BOUNCYWALL
+                    forceh = (hs*-1.5);
+                    break;
+                  case 5: // SLICKWALL
+                    this.onwall = false;
+                    break;
+                  case 6: // DANGERWALL
+                    this.reset();
+                    break;
+                  case 7: // CHECKPOINT
+                    this.set_home(inst.post.x, inst.post.y);
+                    break;
+                }
+                if(affect)hs = 0;
+                if(dirx == 1){
+                  
+                  // Player hits left side of
+                  if(affect)this.post.x = -1+inst.side_l-this.msk.hlfw;
+                }else{
+                  // Player hits right side of
+                  if(affect)this.post.x = 1+inst.side_r+this.msk.hlfw;
+                }
+                if(affect){
+                  nx = this.post.x;
+                  this.msk.update(nx, ny);
+                }
+                //this.vel.h = hs;
+                colh = true;
+              }
+            }
+        }
+      }
+    }
+    
+    // Update Position
+    // add force to velocity
+    if(forceh != 0)this.vel.h = forceh;
+    var vx = (this.vel.h*this.spd);
+    if(forcev != 0)this.vel.v = forcev;
+    var vy = (this.vel.v*this.spd);
+    this.post.x += vx;
+    this.post.y += vy;
+    // Force
+    //this.post.x += forceh;
+    //this.post.y += forcev;
+    this.boundcheck();
+    this.msk.update(this.post.x, this.post.y);
+
+    //GAME.CAMERA.x = Math.floor(this.post.x) - (canvas.width / 2);
+    //GAME.CAMERA.y = Math.floor(this.post.y) - (canvas.height / 2);
+  }
+
+  place_meeting(inst){
+    // Check Collision Masks
+    return rectIntersect(this.msk, inst.msk);
+  }
+
+  // Draw
+  draw(){
+    var ll = this.side_l;
+    var ww = this.msk.ww;
+    var uu = this.side_u;
+    var hh = this.msk.hh;
+    //draw_rectangle(ll, uu, ww, hh, this.color);
+    if(this.type == 0){
+      //GAME.ctx.font = "48px Arial";
+      //GAME.ctx.textAlign = "center";
+      //GAME.ctx.fillStyle = "lightyellow";
+      //GAME.ctx.fillText(String(this.score), this.post.x, this.post.y-(this.msk.hh*2));
+      // Draw Player
+      draw_set_color("#FFFFFF");
+      var hfw = ww/2, hfh = hh/2;
+      draw_line(this.side_l-hfw, this.side_u+hfh, this.side_l+hfw, this.side_d+hfh, 2, 0);
+      draw_line(this.side_l+hfw, this.side_d+hfh, this.side_r+hfw, this.side_u+hfh, 2, 0);
+      draw_line(this.side_l-hfw, this.side_u+hfh, this.side_l+hfw, this.side_u-hfh, 2, 0);
+      draw_line(this.side_l+hfw, this.side_u-hfh, this.side_r+hfw, this.side_u+hfh, 2, 0);
+      draw_set_color("tomato");
+      draw_line(this.side_l, this.side_u, this.side_r, this.side_u, 2, 0);
+      draw_line(this.side_l, this.side_d, this.side_r, this.side_d, 2, 0);
+      draw_line(this.side_l, this.side_u, this.side_l, this.side_d, 2, 0);
+      draw_line(this.side_r, this.side_u, this.side_r, this.side_d, 2, 0);
+      // Draw 
+      var fang = degToRad(this.faceangle), bang = degToRad(this.faceangle+96+this.batangle);
+      var tarx = this.post.x+(lengthdir_x(64, fang)), tary = this.post.y+(lengthdir_y(64, fang));
+      // Draw Direction
+      draw_set_color("lightgreen");
+      draw_line(this.post.x, this.post.y, tarx, tary, 2, 0);
+      draw_set_color("tomato");
+      // Draw cool circle thing
+      //draw_surround_point(tarx, tary, 4, 128, 180);
+      //draw_circle(tarx, tary, 8, 108);
+
+      tarx = this.post.x+(lengthdir_x(128, bang));
+      tary = this.post.y+(lengthdir_y(128, bang));
+      // Draw
+      draw_set_color("#FFF");
+      draw_line(this.post.x, this.post.y, tarx, tary, 2, 0);
+      // Draw Stamina
+      draw_set_color("lightgreen");
+      draw_rectangle(ll, uu-64, this.msk.ww+16, 16, "#424242");
+      draw_rectangle(ll, uu-64, (this.stamina / this.stamina_max)*(this.msk.ww+16), 16, "lightgreen");
+    }
+  }
+
+  // Render
+  render(){
+    this.update();
+    this.draw();
+  }
+}
+
+class PlayerOne extends AbstractEntity {
+  constructor(xx, yy){
+    super(0, xx, yy);
+    this.input_set(0);
+  }
+}
+
+class PlayerTwo extends AbstractEntity {
+  constructor(xx, yy){
+    super(0, xx, yy);
+    this.input_set(1);
+    this.color = "#00BCD4";
+  }
+}
+
+class Particle extends AbstractEntity {
+  constructor(xx, yy){
+    super(0, xx, yy);
+    this.input_set(2);
+    this.color = "#FFFFFF";
+  }
+}
+
+class Wall extends AbstractEntity {
+  constructor(xx, yy){
+    super(1, xx, yy);
+    this.color = "#FFFFFF";
+  }
+  
+  update(){
+    // DO NOTHING
+  }
+}
+
+class StickyWall extends AbstractEntity {
+  constructor(xx, yy){
+    super(2, xx, yy);
+    this.color = "#6A1B9A";
+  }
+
+  update(){
+    // DO NOTHING
+  }
+}
+
+class BouncyWall extends AbstractEntity {
+  constructor(xx, yy){
+    super(3, xx, yy);
+    this.color = "#FFC400";
+  }
+
+  update(){
+    // DO NOTHING
+  }
+}
+
+class SpeedWall extends AbstractEntity {
+  constructor(xx, yy){
+    super(4, xx, yy);
+    this.color = "#42A5F5";
+  }
+
+  update(){
+    // DO NOTHING
+  }
+}
+
+class SlickWall extends AbstractEntity {
+  constructor(xx, yy){
+    super(5, xx, yy);
+    this.color = "#616161";
+  }
+
+  update(){
+    // DO NOTHING
+  }
+}
+
+class DangerWall extends AbstractEntity {
+  constructor(xx, yy){
+    super(6, xx, yy);
+    this.color = "#EF6C00";
+  }
+
+  update(){
+    // DO NOTHING
+  }
+}
+
+class CheckPoint extends AbstractEntity {
+  constructor(xx, yy){
+    super(7, xx, yy);
+    this.color = "#00C853";
+  }
+
+  update(){
+    // DO NOTHING
+  }
+}
+
+class HitRadius {
+  constructor(xx, yy){
+    this.radius = 0;
+    this.post = {x: xx, y: yy};
+    this.instID = GAME.INSTANCES.length;
+    this.color = "tomato";
+    this.radmax = 108;
+    this.radspd = 20;
+  }
+
+  update(){
+    this.radius = slide_into(this.radius, this.radmax, this.radspd);
+    if(this.radius >= this.radmax)instance_destroy(this.instID);// Destroy
+  }
+
+  draw(){
+    //draw_set_rgba(255, 255, 255, 0.1);
+    draw_set_color(this.color);
+    draw_circle(this.post.x, this.post.y, 8, this.radius);
+    //draw_set_rgba(255, 255, 255, 1.0);
+  }
+
+  render(){
+    this.update();
+    this.draw();
+  }
+}
+
+class GrowRadius extends HitRadius {
+  constructor(xx, yy){
+    super(xx, yy);
+    this.color = "#FFFFFF";
+    this.radmax = 48;
+    this.radspd = 6;
+  }
+
+}
+
+class Wave {
+  constructor(xx, yy){
+    this.instID = GAME.INSTANCES.length;
+    this.post = {x: xx, y: yy};
+    this.ang = 0;
+    this.spd = 64;
+    this.color = "tomato";
+    this.lifespan = 10;
+  }
+
+  update(){
+    this.post.x += lengthdir_x(this.spd, this.ang);
+    this.post.y += lengthdir_y(this.spd, this.ang);
+    this.lifespan--;
+    if(this.lifespan <= 0)instance_destroy(this.instID);
+  }
+
+  draw(){
+    draw_set_color(this.color);
+    draw_line(this.post.x, this.post.y, this.post.x-lengthdir_x(32, this.ang), this.post.y-lengthdir_y(32, this.ang), 4, 0);
+    var wx = this.post.x - lengthdir_x(32, this.ang - 32);
+    var wy = this.post.y - lengthdir_y(32, this.ang - 32);
+    draw_line(this.post.x, this.post.y, wx, wy, 4, 0);
+    var wx2 = this.post.x - lengthdir_x(32, this.ang + 32);
+    var wy2 = this.post.y - lengthdir_y(32, this.ang + 32);
+    draw_line(this.post.x, this.post.y, wx2, wy2, 4, 0);
+    draw_set_color("#FFFFFF");
+  }
+  
+  render(){
+    this.update();
+    this.draw();
+  }
+}
+
+/*
+GAME STATES:
+0 - INITIALIZATION
+*/
+var STATE = 0;
+var GAME = {
+  ctx: getByID("canvas").getContext("2d"),
+  INSTANCES: [NONE, NONE],
+  ALARM: new alarm_system(6),
+  start: function(){
+      this.interval = setInterval(update, 60);
+
+      },
+  CAMERA: new Camera(NONE),
+  render: function(){
+    draw_bg();
+    draw_insts();
+    GAME.PLAYER.render();
+  },
+  PLAYER: new PlayerOne(0, 32, 32)
+}
+
+// [ - - Game Methods - - ]
+/**
+  * Begin Game.
+*/
+function play(){
+  GAME.start();
 }
 
 /**
-	* Update Events.
+  * Update Game.
 */
 function update(){
-	SYSTEM.ALARM.update();
+  GAME.CAMERA.update();
+  drawImage(imageObj.image);
+  GAME.ALARM.update();
+  
+  switch(STATE){
+    case 0: // INITIALIZATION
+      //level_load(GAME.level[1]);
+      STATE = 1;
+      break;
+    case 1:
+      break;
+  }
+  
 }
 
+// Drawing
+function draw_bg(){
+  draw_rectangle(GAME.CAMERA.x, GAME.CAMERA.y, canvas.width, canvas.height, "#000000");
+}
+
+function draw_insts(){
+  if(STATE == 0)return;
+  
+  var grid = GAME.INSTANCES;
+  var gridw = grid.length;
+  for(var i = 0; i < gridw; i++){
+    var inst = grid[i];
+    if(inst != NONE){
+      inst.render();
+    }
+  }
+}
+
+function level_switch(levelID){
+  level_trash();
+  GAME.ALARM.add(level_load, 1, levelID);
+}
+
+function level_load(plan){
+  var planw = plan.length;
+  var planh = plan[0].length;
+  for(var i = 0; i < planw; i++){
+    for(var j = 0; j < planh; j++){
+      var type = NONE;
+      var spot = plan[i].substring(j, j+1);
+      switch(spot){
+        case "@": type = 0; break; // PLAYER1
+        case "%": type = 1; break; // PLAYER2
+        case "X": type = 2; break; // WALL
+        case "=": type = 3; break; // STICKYWALL
+        case "O": type = 4; break; // BOUNCYWALL
+        case ">": type = 5; break; // SPEEDWALL
+        case "|": type = 6; break; // SLICKWALL
+        case "*": type = 7; break; // DANGERWALL
+        case "~": type = 8; break; // DANGERWALL
+      }
+      if(type != NONE){
+        //alert("made a wall:"+i+", "+j);
+        // Add Instance
+        //var inst = new Instance(instID, posX, posY);
+        var posX = j*TILE_SIZE, posY = i*TILE_SIZE;
+        var inst = instance_create(type, posX, posY);
+        GAME.INSTANCES.push(inst);
+      }
+    }
+  }
+}
+
+function level_trash(){
+  GAME.INSTANCES = [NONE, NONE];
+}
+
+function instance_add(type, xx, yy){
+  var inst = instance_create(type, xx, yy);
+  GAME.INSTANCES.push(inst);
+  return inst;
+}
+
+function instance_create(type, xx, yy){
+  switch(type){
+    case 0: return new PlayerOne(xx, yy);
+    case 1: return new PlayerTwo(xx, yy);
+    case 2: return new Wall(xx, yy);
+    case 3: return new StickyWall(xx, yy);
+    case 4: return new BouncyWall(xx, yy);
+    case 5: return new SpeedWall(xx, yy);
+    case 6: return new SlickWall(xx, yy);
+    case 7: return new DangerWall(xx, yy);
+    case 8: return new CheckPoint(xx, yy);
+    case 9: return new Particle(xx, yy);
+    case 10: return new HitRadius(xx, yy);
+    case 11: return new GrowRadius(xx, yy);
+    case 12: return new Wave(xx, yy);
+  }
+  return undefined;
+}
+
+function instance_destroy(instID){
+  GAME.INSTANCES[instID] = NONE;
+}
+
+// [ - - Player Control Buttons - - ]
 /**
-	* Next Button.
+  * Player Reset Button.
 */
-function btn_nxt(){
-	var size = SYSTEM.RADS[0].find();//find_radio("size");
-	var color = SYSTEM.RADS[1].find();
-	var quant = SYSTEM.RADS[2].find();
-	var notif = false;
-	var msg = NONE;
-	if(quant == undefined){
-		// Trigger Notification
-		notif = true;
-		msg = 0;
-	}
-	if(size == undefined){
-		// Trigger Notification
-		notif = true;
-		if(quant == undefined){
-			msg = 2;
-		}else{
-			msg = 1;
-		}
-	}
-	if(color == undefined){
-		// Trigger Notification
-		notif = true;
-		if(quant == undefined){
-			if(size == undefined){
-				msg = 6;
-			}else{
-				msg = 4;
-			}
-		}else{
-			if(size == undefined){
-				msg = 5;
-			}else{
-				msg = 3;
-			}
-		}
-	}
-	switch(msg){
-		case NONE: break;
-		case 0: // Name
-			set_text("notif_invalid", "Quantity is invalid...");
-			break;
-		case 1: // Size
-			set_text("notif_invalid", "Size is invalid...");
-			break;
-		case 2: // Name and Size
-			set_text("notif_invalid", "Quantity and Size is invalid...");
-			break;
-		case 3: // Color
-			set_text("notif_invalid", "Color is invalid...");
-			break;
-		case 4: // Name and Color
-			set_text("notif_invalid", "Quantity and Color is invalid...");
-			break;
-		case 5: // Size and Color
-			set_text("notif_invalid", "Size and Color is invalid...");
-			break;
-		case 6: // Name, Size, and Color
-			set_text("notif_invalid", "Quantity, Size, and Color is invalid...");
-			break;
-	}
-	if(notif){
-		// Notification: Invalid.
-		if(SYSTEM.ALARM.alarms[1].time == NONE){
-			notif_invalid();
-		}
-		
-		SYSTEM.ALARM.set(1, 10, notif_invalid, NONE);
-		// Exit
-		return false;
-	}
-	// Approve Name
-	var sz = "Small";
-	switch(size){
-		case 1: sz = "Medium"; break;
-		case 2: sz = "Large"; break;
-		case 3: sz = "XLarge"; break;
-		case 4: sz = "2XLarge"; break;
-	}
-	// Reveal rest of Form
-	classOn("purchaseform", "form_on");
-	classOff("purchaseform", "form_off");
-	classOn("b_nxt", "hide");
-	// Exit
-	return false;
-	//alert("Name Submitted: "+name+", Size:"+sz);
+function btn_reset(){
+  STATE = 0;
 }
 
-function rad_color_get(colorID){
-	// Returns string of color name
-	var name = "white";
-	switch(colorID){
-		case 0: name = "white"; break;
-		case 1: name = "red"; break;
-		case 2: name = "orange"; break;
-		case 3: name = "yellow"; break;
-		case 4: name = "green"; break;
-		case 5: name = "blue"; break;
-	}
-	return name;
+
+
+// DISPLAY FIX - - - - - - - - - - - - - - -
+// this prvents iOS browsers from moving the viewport on drag
+$(window).bind(
+  'touchmove',
+   function(e) {
+    e.preventDefault();
+  }
+);
+
+// this function fill an image on canvas
+function drawImage(image) {
+   context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
 }
 
-function node_color_activate(radsID, radID){
-	rad_activate(radsID, radID);
-	form_update();
+// this function will render your drawings
+var ww = 300;
+function drawImage(stage) {
+
+  GAME.render();
+
+  //ww++;
+  //context.fillRect (50, 50, ww, 700);
+  //draw_rectangle(50, 50, ww, 700, "deepskyblue");
+  //draw_rectangle(800, 100, 1000, 300, "darkseagreen");
+  //draw_rectangle(1708, 200, 500, 900, "tomato");
+
+  //alert("render");
 }
 
-function btn_submit(){
-	return false;
+function draw_set_color(color){
+  context.fillStyle = color;
 }
 
-/**
-	* Notification: Invalid.
-*/
-function notif_invalid(){
-	var notif = $('#notif_invalid');
-	notif.toggleClass("invalid_off");
-	notif.toggleClass("invalid_on");
+function draw_set_rgba(rr, gg, bb, aa){
+  var col = "rgba("+String(rr)+","+String(gg)+","+String(bb)+","+String(aa)+")";
+  draw_set_color(col);
 }
+
+function draw_rectangle(x1, y1, ww, hh){
+  draw_set_color("#FFF");
+  context.fillRect(Math.floor(x1-GAME.CAMERA.x), Math.floor(y1-GAME.CAMERA.y), ww, hh);
+}
+function draw_rectangle(x1, y1, ww, hh, color){
+  draw_set_color(color);
+  context.fillRect(x1-GAME.CAMERA.x, y1-GAME.CAMERA.y, ww, hh);
+}
+
+function draw_line(x1, y1, x2, y2, thickness, sep){
+  var dis = getDistance(x1, y1, x2, y2);
+  var angle = degToRad(getDirection(x1, y1, x2, y2));
+  var truesize = thickness+sep;
+  var spaces = Math.floor(dis / truesize);
+  for(var i = 0; i < spaces; i++){
+    var xx = x1 + lengthdir_x((thickness*i)+(sep*i), angle), yy = y1 + lengthdir_y((thickness*i)+(sep*i), angle);
+    // Draw
+    draw_rectangle(xx, yy, thickness, thickness);
+  }
+}
+
+function draw_surround_point(xx, yy, thickness, sep, amount){
+  var portion = 360 / amount;
+  for(var i = 0; i <= amount; i++){
+    var ang = i*portion;
+    var lx = xx+lengthdir_x(sep, ang);
+    var ly = yy+lengthdir_y(sep, ang);
+    draw_pixel(lx, ly, thickness);
+  }
+}
+
+function draw_circle(xx, yy, thickness, radius){
+  draw_surround_point(xx, yy, thickness, radius, 360);
+}
+
+function draw_pixel(xx, yy, thickness){
+  draw_rectangle(xx, yy, thickness, thickness);
+}
+
+// The Length between Two X Coordinates
+function lengthdir_x(len, rad){
+  return Math.cos(rad)*len;
+}
+
+// The Length between Two Y Coordinates
+function lengthdir_y(len, rad){
+  return Math.sin(rad)*len;
+}
+
+function getDistance(x1, y1, x2, y2){
+  var disX = Math.abs(x2 - x1), disY = Math.abs(y2 - y1);
+  disX *= disX;
+  disY *= disY;
+  return Math.sqrt(disX + disY);
+}
+
+function getDirection(x1, y1, x2, y2){
+  var dy = y2 - y1, dx = x2 - x1;
+  return radToDeg(Math.atan2(dy, dx));
+}
+
+function radToDeg(rad){
+  return rad*(180 / Math.PI);
+}
+
+function degToRad(deg){
+  return deg*(Math.PI / 180);
+}
+
+var imageObj = new Image();
+imageObj.onload = function () {
+   drawImage(image);
+};
+
+var drawStage = new Image();
+drawStage.onload = function () {
+   drawImage(stage);
+};
+
+// set this to false to maintain the canvas aspect ratio, or true otherwise
+var stretch_to_fit = false;
+
+function resize() {
+   // aspect ratio
+   var widthToHeight = canvas.width / canvas.height;
+   var newWidthToHeight = widthToHeight;
+
+   // cache the window dimensions (discount the border)
+   var newWidth = window.innerWidth,
+       newHeight = window.innerHeight;
+
+   if (stretch_to_fit) {
+       // overwrite the current canvas aspect ratio to fit the entire screen
+       widthToHeight = window.innerWidth / window.innerHeight;
+   } else {
+       newWidthToHeight = newWidth / newHeight;
+   }
+
+
+   // scale the container using CSS		
+   if (newWidthToHeight > widthToHeight) {
+       newWidth = newHeight * widthToHeight;
+       container.style.height = newHeight + 'px';
+       container.style.width = newWidth + 'px';
+   } else {
+       newHeight = newWidth / widthToHeight;
+       container.style.width = newWidth + 'px';
+       container.style.height = newHeight + 'px';
+   }
+
+   // adjust the container position 
+   container.style.marginTop = (-newHeight / 2) + 'px';
+   container.style.marginLeft = (-newWidth / 2) + 'px';
+
+};
+
+// listen to resize events
+window.addEventListener('resize', function () {
+   resize();
+}, false);
+
+// also resize the screen on orientation changes
+window.addEventListener('orientationchange', function () {
+   resize();
+}, false);
+
+// draw the image on canvas
+// note that you dont need to redraw on resize since the canvas element stays intact    
+drawImage(imageObj);
+
+// first resize
+resize();
+
+
+
 
 /*
-	NAVIGATION
-*/
-
-function navigate(pageID){
-	var path = "index.html";
-	switch(pageID){
-		case 0: break;
-		case 1: path = "about.html"; break;
-	}
-	// Go to Path
-	document.location.href = path;
-}
-
-function btn_setitem(itemID){
-	SYSTEM.ITEM = itemID;
-	form_update();
-}
-
-function btn_form(){
-	document.location.href = "form.html";
-}
-
-function form_update(){
-	switch(SYSTEM.ITEM){
-		case NONE:
-			classOn("storeform", "form_off");
-			classOff("storeform", "form_on");
-			break;
-		case 0:
-		case 1:
-			classOn("storeform", "form_on");
-			classOff("storeform", "form_off");
-			// Update Images
-			for(var i = 0; i < 5; i++){
-				imgChange("ishirt"+String(i), "assets/shirtsketch"+String(SYSTEM.ITEM)+String(rad_color_get(SYSTEM.RADS[1].find()))+".png");
-			}
-			var quant = SYSTEM.RADS[2].find();
-			//alert("quant:"+quant);
-			if(quant == 6){
-				classOff("quantcustom", "hide");
-			}else{
-				classOn("quantcustom", "hide");
-			}
-			break;
-	}
-}
-
-/*
-	Page Layout:
-	X- Navigation
-	X- Item Selection
-	- Selection Form {
-		X- Color Selection
-		X- Size Selection
-		X- Next Button
-		- Purchase Form {
-			X- Name Input
-			- 
-			X- Submit Button
-		}
-	}
+  TODO:
+  - New Entity Types [
+    - HitBox Radius
+    - 
+    - Orb (Player Currency)
+    - StaminaOrb (Refills Player Stamina)
+  ]
 */
