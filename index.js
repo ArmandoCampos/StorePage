@@ -479,6 +479,13 @@ function form_update(){
 			for(var i = 0; i < 5; i++){
 				imgChange("ishirt"+String(i), "assets/shirtsketch"+String(SYSTEM.ITEM)+String(rad_color_get(SYSTEM.RADS[1].find()))+".png");
 			}
+			var quant = SYSTEM.RADS[2].find();
+			//alert("quant:"+quant);
+			if(quant == 6){
+				classOff("quantcustom", "hide");
+			}else{
+				classOn("quantcustom", "hide");
+			}
 			break;
 	}
 }
@@ -492,6 +499,7 @@ function form_update(){
 		X- Size Selection
 		X- Next Button
 		- Purchase Form {
+			X- Name Input
 			- 
 			X- Submit Button
 		}
