@@ -40,18 +40,19 @@
 <form action="" name="info">
 	<fieldset>
 	<div class="area" style="margin: 0px;">
-	[ Size ]<br>
+	<img class="resize_s centered" id="displayshirt" src="assets/shirtsketch0white.png" />
+	<span class="para">[ Size ]</span><br>
 	<!-- Custom Radio Button Experiment -->
 	<div class="rads" id="rads0">
-		<div class="rad rad_off" id="rad00" onclick="rad_activate(0, 0);"><img class="resize_s" id="ishirt0" src="assets/shirtsketch0white.png" />S</div>
-		<div class="rad rad_off" id="rad01" onclick="rad_activate(0, 1);"><img class="resize_s" id="ishirt1" src="assets/shirtsketch0white.png" />M</div>
-		<div class="rad rad_off" id="rad02" onclick="rad_activate(0, 2);"><img class="resize_s" id="ishirt2" src="assets/shirtsketch0white.png" />L</div>
-		<div class="rad rad_off" id="rad03" onclick="rad_activate(0, 3);"><img class="resize_s" id="ishirt3" src="assets/shirtsketch0white.png" />XL</div>
-		<div class="rad rad_off" id="rad04" onclick="rad_activate(0, 4);"><img class="resize_s" id="ishirt4" src="assets/shirtsketch0white.png" />2XL</div>
+		<div class="rad rad_off" id="rad00" onclick="rad_activate(0, 0);"><div class="node_color bg_white">S</div></div>
+		<div class="rad rad_off" id="rad01" onclick="rad_activate(0, 1);"><div class="node_color bg_white">M</div></div>
+		<div class="rad rad_off" id="rad02" onclick="rad_activate(0, 2);"><div class="node_color bg_white">L</div></div>
+		<div class="rad rad_off" id="rad03" onclick="rad_activate(0, 3);"><div class="node_color bg_white">XL</div></div>
+		<div class="rad rad_off" id="rad04" onclick="rad_activate(0, 4);"><div class="node_color bg_white">2XL</div></div>
 	</div>
 	</div>
 	<div class="area" style="margin: 0px;">
-	[ Color ]<br>
+	<span class="para">[ Color ]</span><br>
 	<!-- Custom Radio Button Experiment -->
 	<div class="rads" id="rads1">
 		<div class="rad rad_off" id="rad10" onclick="node_color_activate(1, 0);"><div class="node_color bg_white">.</div></div>
@@ -63,7 +64,7 @@
 	</div>
 	</div>
 	<div class="area" style="margin: 0px;">
-	[ Quantity ]<br>
+	<span class="para">[ Quantity ]</span><br>
 	<!--<input id="i_quant" type="text" name="quantity">-->
 	<div class="rads" id="rads2">
 		<div class="rad rad_off" id="rad20" onclick="node_color_activate(2, 0);"><div class="node_color bg_white">1</div></div>
@@ -88,6 +89,7 @@
 	<input id="i_name" type="text" name="firstname">
 	</div>
 	<div class="divider">...</div>
+	<span id="selitem" class="additional" style="display: block;">[ test ]</span>
 	<input class="btn" onclick="return btn_submit();" class="sub" type="submit" value="ADD TO CART">
 	<span class="notif invalid_off" id="notif_invalidsub">please fill all required fields...</span>
 	</div>

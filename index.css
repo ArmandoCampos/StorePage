@@ -42,6 +42,12 @@ fieldset {
 	text-align: center;
 }
 
+.centered {
+	display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
 .divider {
 	color: #FFF;
 	margin: 20px;

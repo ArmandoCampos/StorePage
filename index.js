@@ -295,6 +295,10 @@ function set_text(id, text){
 	getByID(id).innerHTML = text;
 }
 
+function get_text(id){
+	return String(getByID(id).value);
+}
+
 // - - - - - - - - - - - - - - - - - - -
 // [ - - Initialize System - - ]
 var SYSTEM = {
@@ -413,6 +417,7 @@ function btn_nxt(){
 	classOff("purchaseform", "form_off");
 	classOn("b_nxt", "hide");
 	// Exit
+	form_update();
 	return false;
 	//alert("Name Submitted: "+name+", Size:"+sz);
 }
@@ -427,6 +432,20 @@ function rad_color_get(colorID){
 		case 3: name = "yellow"; break;
 		case 4: name = "green"; break;
 		case 5: name = "blue"; break;
+	}
+	return name;
+}
+
+function rad_quant_get(quantID){
+	var name = "1";
+	switch(quantID){
+		case 0: name = "1"; break;
+		case 1: name = "2"; break;
+		case 2: name = "3"; break;
+		case 3: name = "5"; break;
+		case 4: name = "9"; break;
+		case 5: name = "12"; break;
+		case 6: name = get_text("i_quant"); break;
 	}
 	return name;
 }
@@ -482,10 +501,9 @@ function form_update(){
 		case 1:
 			classOn("storeform", "form_on");
 			classOff("storeform", "form_off");
-			// Update Images
-			for(var i = 0; i < 5; i++){
-				imgChange("ishirt"+String(i), "assets/shirtsketch"+String(SYSTEM.ITEM)+String(rad_color_get(SYSTEM.RADS[1].find()))+".png");
-			}
+			// Update Display Shirt Image
+			imgChange("displayshirt", "assets/shirtsketch"+String(SYSTEM.ITEM)+String(rad_color_get(SYSTEM.RADS[1].find()))+".png");
+
 			var quant = SYSTEM.RADS[2].find();
 			//alert("quant:"+quant);
 			if(quant == 6){
@@ -493,6 +511,10 @@ function form_update(){
 			}else{
 				classOn("quantcustom", "hide");
 			}
+			var num = rad_quant_get(quant);
+			var col = rad_color_get(SYSTEM.RADS[1].find());
+			var type = "Shirt";
+			set_text("selitem", "[ "+String(num)+" "+String(col)+" "+String(type)+"(s)"+" ]");
 			break;
 	}
 }
@@ -502,12 +524,14 @@ function form_update(){
 	X- Navigation
 	X- Item Selection
 	- Selection Form {
+		X- Display Item
 		X- Color Selection
 		X- Size Selection
 		X- Next Button
 		- Purchase Form {
 			X- Name Input
 			- 
+			X- Order Text
 			X- Submit Button
 		}
 	}
