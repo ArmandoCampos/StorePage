@@ -450,6 +450,15 @@ function rad_quant_get(quantID){
 	return name;
 }
 
+function item_type_get(itemID){
+	var name = "Shirtdefault";
+	switch(itemID){
+		case 0: name = "T-Shirt"; break;
+		case 1: name = "V-Neck Shirt"; break;
+	}
+	return name;
+}
+
 function node_color_activate(radsID, radID){
 	rad_activate(radsID, radID);
 	form_update();
@@ -513,7 +522,7 @@ function form_update(){
 			}
 			var num = rad_quant_get(quant);
 			var col = rad_color_get(SYSTEM.RADS[1].find());
-			var type = "Shirt";
+			var type = item_type_get(SYSTEM.ITEM);
 			set_text("selitem", "[ "+String(num)+" "+String(col)+" "+String(type)+"(s)"+" ]");
 			break;
 	}
