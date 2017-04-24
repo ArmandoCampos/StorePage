@@ -1,23 +1,103 @@
-<!DOCTYPE HTML>
+<!DOCTYPE HTMl>
 <html>
 <head>
-	<meta charset="utf-8">
-	<link rel="stylesheet" href="index.css">
-	<title>TopDown Action</title>
-	<link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
-	<link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
-	<link rel="icon" type="image/png" href="favicon-196x196.png" sizes="196x196">
+<title>Test Store</title>
+<style>
+@import url(index.css);
+@import url('https://fonts.googleapis.com/css?family=Merriweather');
+@import url('https://fonts.googleapis.com/css?family=Libre+Baskerville');
+@import url('https://fonts.googleapis.com/css?family=Enriqueta');
+</style>
+<link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
+<link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="favicon-196x196.png" sizes="196x196">
 </head>
-<body onload="play();">
-<div class="wrapper">
+<body onload="init(3); rad_default(0, 0); rad_default(1, 0); rad_default(2, 0);">
 
-<!-- [ Gameplay ] -->
+<div id="wrapper">
 
-<canvas id="canvas" width="2208" height="1242"></canvas>
+<div class="area" style="padding: 0px; margin: 6px 0px;">
+	<div class="nav">
+		<ul>
+			<li class="navb" onclick="navigate(0);">Home</li>
+			<li class="navb" onclick="navigate(1);">About</li>
+		</ul>
+	</div>
+</div>
 
-<div class="divider">...</div>
+<div class="para centext">Test Store</div>
+
+<div class="area" style="padding: 10px;">
+	<img class="resize_m hover" onclick="btn_setitem(0);" src="assets/shirtsketch0white.png" />
+	<img class="resize_s hover" onclick="btn_setitem(1);" src="assets/shirtsketch1white.png" />
+</div>
+
+<div id="storeform" class="form_off">
+<div class="para centext">Test Store Form...</div>
+<div class="additional centext">Please Enter a Name and Select a Size...</div>
+
+<div class="area" style="padding: 0px;">
+<form action="" name="info">
+	<fieldset>
+	<div class="area" style="margin: 0px;">
+	[ Size ]<br>
+	<!-- Custom Radio Button Experiment -->
+	<div class="rads" id="rads0">
+		<div class="rad rad_off" id="rad00" onclick="rad_activate(0, 0);"><img class="resize_s" id="ishirt0" src="assets/shirtsketch0white.png" />S</div>
+		<div class="rad rad_off" id="rad01" onclick="rad_activate(0, 1);"><img class="resize_s" id="ishirt1" src="assets/shirtsketch0white.png" />M</div>
+		<div class="rad rad_off" id="rad02" onclick="rad_activate(0, 2);"><img class="resize_s" id="ishirt2" src="assets/shirtsketch0white.png" />L</div>
+		<div class="rad rad_off" id="rad03" onclick="rad_activate(0, 3);"><img class="resize_s" id="ishirt3" src="assets/shirtsketch0white.png" />XL</div>
+		<div class="rad rad_off" id="rad04" onclick="rad_activate(0, 4);"><img class="resize_s" id="ishirt4" src="assets/shirtsketch0white.png" />2XL</div>
+	</div>
+	</div>
+	<div class="area" style="margin: 0px;">
+	[ Color ]<br>
+	<!-- Custom Radio Button Experiment -->
+	<div class="rads" id="rads1">
+		<div class="rad rad_off" id="rad10" onclick="node_color_activate(1, 0);"><div class="node_color bg_white">.</div></div>
+		<div class="rad rad_off" id="rad11" onclick="node_color_activate(1, 1);"><div class="node_color bg_red">.</div></div>
+		<div class="rad rad_off" id="rad12" onclick="node_color_activate(1, 2);"><div class="node_color bg_orange">.</div></div>
+		<div class="rad rad_off" id="rad13" onclick="node_color_activate(1, 3);"><div class="node_color bg_yellow">.</div></div>
+		<div class="rad rad_off" id="rad14" onclick="node_color_activate(1, 4);"><div class="node_color bg_green">.</div></div>
+		<div class="rad rad_off" id="rad15" onclick="node_color_activate(1, 5);"><div class="node_color bg_blue">.</div></div>
+	</div>
+	</div>
+	<div class="area" style="margin: 0px;">
+	[ Quantity ]<br>
+	<!--<input id="i_quant" type="text" name="quantity">-->
+	<div class="rads" id="rads2">
+		<div class="rad rad_off" id="rad20" onclick="node_color_activate(2, 0);"><div class="node_color bg_white">1</div></div>
+		<div class="rad rad_off" id="rad21" onclick="node_color_activate(2, 1);"><div class="node_color bg_white">2</div></div>
+		<div class="rad rad_off" id="rad22" onclick="node_color_activate(2, 2);"><div class="node_color bg_white">3</div></div>
+		<div class="rad rad_off" id="rad23" onclick="node_color_activate(2, 3);"><div class="node_color bg_white">5</div></div>
+		<div class="rad rad_off" id="rad24" onclick="node_color_activate(2, 4);"><div class="node_color bg_white">9</div></div>
+		<div class="rad rad_off" id="rad25" onclick="node_color_activate(2, 5);"><div class="node_color bg_white">12</div></div>
+		<div class="rad rad_off" id="rad26" onclick="node_color_activate(2, 6);"><div class="node_color bg_white">Custom</div></div>
+		<div id="quantcustom" class="hide">
+			<input id="i_quant" type="text" name="quant">
+		</div>
+	</div>
+	</div>
+	<br>
+	<input id="b_nxt" class="btn" onclick="return btn_nxt();" type="submit" value="NEXT">
+	<span class="notif invalid_off" id="notif_invalid">Name is invalid...</span>
+
+	<div id="purchaseform" class="form_off">
+	<div class="area" style="margin: 0px;">
+	[ Name ]<br>
+	<input id="i_name" type="text" name="firstname">
+	</div>
+	<div class="divider">...</div>
+	<input class="btn" onclick="return btn_submit();" class="sub" type="submit" value="ADD TO CART">
+	<span class="notif invalid_off" id="notif_invalidsub">please fill all required fields...</span>
+	</div>
+	</fieldset>
+</form>
+</div>
+</div>
 
 </div>
+
 <!-- Import -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="index.js"></script>

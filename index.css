@@ -1,36 +1,35 @@
 /*
-Armando Campos
-3/27/17
+	Armando Campos 2017
 */
 
 body {
-	font-size: 16px;
+	background-color: #FFF;
+	font-family: 'Libre Baskerville', serif;
+	font-size: 24px;
+}
+
+#wrapper {
+	margin: 10px;
 	background-color: #FFF;
 }
 
-.wrapper {
-	margin: 8px;
-	padding: 8px;
-	border: solid 2px #000;
-}
-
-canvas {
-	width: 100%;
-	height: 100%;
-	display:block;
-	margin: 10px auto 20px;
-	border: 1px solid #333;
-	box-shadow: 0 0 16px 2px rgba(0,0,0,0.8);
+fieldset {
+	border: none;
 }
 
 /* [ - - General Custom Classes - - ] */
 
+.hide {
+	display: none;
+}
+
 .area {
 	margin: 4px;
 	padding: 6px;
-	border: solid 2px #c1c1c1;
+	border: solid 6px #212121;
 	overflow: hidden;
-	background: #212121;
+	box-shadow: 6px 6px 2px #c1c1c1;
+	/*background: #212121;*/
 }
 
 .item {
@@ -48,37 +47,176 @@ canvas {
 	margin: 20px;
 }
 
-.cup {
-	position: relative;
-	z-index: 0;
-	width: 80px;
-	filter: brightness(100%) hue-rotate(0deg);
-	transform: scale(1.0);
-	transition: filter 0.2s, transform 0.2s;
+.para {
+	font-size: 16px;
 }
 
-.cup:hover {
-	z-index: 100;
-	filter: brightness(86%) hue-rotate(90deg);
-	transform: scale(1.2);
+.hover {
+	transition: filter 0.2s;
+}
+
+.hover:hover {
+	filter: brightness(120%);
 	cursor: pointer;
 }
 
+.sub {
+	font-family: 'Libre Baskerville', serif;
+	background-color: #FFF;
+	border-width: 2px;
+	border-color: #000;
+}
 
-button {
-	border: solid 4px #c1c1c1;
+.btn {
+	border: solid 4px #757575;
 	background: #FFF;
 	font-size: 24px;
-	color: #000;
-	transition: color 0.2s, background 0.2s, transform 0.2s;
+	color: #212121;
+	transition: color 0.2s, background 0.2s, transform 0.2s, border 0.2s;
 	border-radius: 8px;
 	transform: scale(1.0);
 }
 
-button:hover {
+.btn:hover {
 	cursor: pointer;
 	color: #c1c1c1;
 	transform: scale(0.8);
 	background: #212121;
-	color: yellow;
+	color: #FFD740;
+	border-radius: 0px;
+	border-color: #BDBDBD;
+}
+
+/* - Notifications - */
+.notif {
+	transition: filter 0.2s, color 0.1s;
+}
+
+/* Invalid */
+.invalid_off {
+	color: #000;
+	filter: opacity(0%);
+}
+.invalid_on {
+	color: red;
+	filter: opacity(100%);
+}
+
+/* Custom Radio Buttons */
+.additional {
+	font-family: 'Enriqueta', serif;
+	font-size: 16px;
+	color: #3e3e3e;
+	margin: 4px 0px;
+}
+
+.rads {
+	
+}
+
+.rad {
+	transition: transform 0.2s, background-color 0.2s;
+	transform-origin: 0%;
+	float: left;
+}
+
+.rad:hover {
+	cursor: pointer;
+}
+
+.rad_on {
+	background-color: #c1c1c1;
+}
+
+.rad_off {
+
+}
+
+.rad_off:hover {
+	background-color: #e0e0e0;
+}
+
+.resize_m {
+	width: 120px;
+}
+
+.resize_s {
+	width: 100px;
+}
+
+.nav {
+	display: block;
+}
+
+.nav ul {
+	text-decoration: none;
+	list-style: none;
+	float: left;
+	margin: 0px;
+	padding: 10px;
+}
+
+.navb {
+	float: left;
+	padding: 0px 4px;
+	font-size: 16px;
+	transition: color 0.2s;
+}
+
+.navb:hover {
+	color: red;
+	cursor: pointer;
+}
+
+.form_on {
+
+}
+
+.form_off {
+	display: none;
+}
+
+.node_color {
+	padding: 2px 16px;
+	margin: 0px 2px;
+	border: 4px solid #c1c1c1;
+	border-radius: 10px;
+	transition: border-color 0.2s, border-radius 0.2s, transform 0.2s;
+	color: #FFF;
+}
+
+.node_color:hover {
+	border-color: #000;
+	border-radius: 0px;
+	transform: scaleY(1.2);
+}
+
+.rad_on > .node_color {
+	border-color: #000;
+	transform: scaleY(1.2);
+}
+
+.bg_white {
+	background-color: #FFFFFF;
+	color: #000;
+}
+
+.bg_red {
+	background-color: #F44336;
+}
+
+.bg_orange {
+	background-color: #FF6D00;
+}
+
+.bg_yellow {
+	background-color: #FFEB3B;
+}
+
+.bg_green {
+	background-color: #4CAF50;
+}
+
+.bg_blue {
+	background-color: #2196F3;
 }
