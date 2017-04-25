@@ -235,6 +235,10 @@ function valid(value){
 	return (value != NONE);
 }
 
+function isNumber(str){
+	return !/\D/.test(str);
+}
+
 /**
 	* Remove Random Value from Array. Warning, Will not check for remaining values.
 	* @param array Array to remove value from.
@@ -366,6 +370,8 @@ function btn_nxt(){
 	if(quant == 6){
 		var custom = getByID("quantcustom").value;
 		if(custom == "")msg = 7;
+		if(!isNumber(custom))msg = 7;
+		if(msg == 7)notif = true;
 	}
 	switch(msg){
 		case NONE: break;
@@ -391,7 +397,7 @@ function btn_nxt(){
 			set_text("notif_invalid", "Quantity, Size, and Color is invalid...");
 			break;
 		case 7:
-			set_text("notif_invalid", "Quantity is Invalid...");
+			set_text("notif_invalid", "Custom Quantity is Invalid...");
 			break;
 	}
 	if(notif){
@@ -432,6 +438,7 @@ function rad_color_get(colorID){
 		case 3: name = "yellow"; break;
 		case 4: name = "green"; break;
 		case 5: name = "blue"; break;
+		case 6: name = "black"; break;
 	}
 	return name;
 }
@@ -520,10 +527,22 @@ function form_update(){
 			}else{
 				classOn("quantcustom", "hide");
 			}
+			// Display Price and Item Requests
 			var num = rad_quant_get(quant);
+			if(!isNumber(String(num))){
+				set_text("notif_invalid", "Custom Quantity is invalid...");
+				// Notification: Invalid.
+				if(SYSTEM.ALARM.alarms[1].time == NONE){
+					notif_invalid();
+				}
+				
+				SYSTEM.ALARM.set(1, 10, notif_invalid, NONE);
+			}
+			// Check if not number
+			var price = 10*num;
 			var col = rad_color_get(SYSTEM.RADS[1].find());
 			var type = item_type_get(SYSTEM.ITEM);
-			set_text("selitem", "[ "+String(num)+" "+String(col)+" "+String(type)+"(s)"+" ]");
+			set_text("selitem", "[ $"+String(price)+" - "+String(num)+" "+String(col)+" "+String(type)+"(s)"+" ]");
 			break;
 	}
 }

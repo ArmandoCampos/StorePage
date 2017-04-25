@@ -207,6 +207,11 @@ fieldset {
 	color: #000;
 }
 
+.bg_black {
+	background-color: #000000;
+	color: #FFF;
+}
+
 .bg_red {
 	background-color: #F44336;
 }
