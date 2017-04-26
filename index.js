@@ -539,7 +539,7 @@ function form_update(){
 				SYSTEM.ALARM.set(1, 10, notif_invalid, NONE);
 			}
 			// Check if not number
-			var price = 10*num;
+			var price = 8*num;
 			var col = rad_color_get(SYSTEM.RADS[1].find());
 			var type = item_type_get(SYSTEM.ITEM);
 			set_text("selitem", "[ $"+String(price)+" - "+String(num)+" "+String(col)+" "+String(type)+"(s)"+" ]");
