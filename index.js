@@ -462,6 +462,7 @@ function item_type_get(itemID){
 	switch(itemID){
 		case 0: name = "T-Shirt"; break;
 		case 1: name = "V-Neck Shirt"; break;
+		case 2: name = "Long Sleeve"; break;
 	}
 	return name;
 }
@@ -515,6 +516,7 @@ function form_update(){
 			break;
 		case 0:
 		case 1:
+		case 2:
 			classOn("storeform", "form_on");
 			classOff("storeform", "form_off");
 			// Update Display Shirt Image

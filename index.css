@@ -29,7 +29,7 @@ fieldset {
 	padding: 6px;
 	border: solid 6px #212121;
 	overflow: hidden;
-	box-shadow: 6px 6px 2px #c1c1c1;
+	box-shadow: 6px 6px 2px #212121;
 	/*background: #212121;*/
 }
 
@@ -188,11 +188,12 @@ fieldset {
 	border: 2px solid #c1c1c1;
 	border-radius: 0px;
 	filter: brightness(100%);
-	transition: border-color 0.2s, border-radius 0.2s, transform 0.1s, filter 0.2s;
+	transition: color 0.2s, border-color 0.2s, border-radius 0.2s, transform 0.1s, filter 0.2s;
 	color: #FFF;
 }
 
 .node_color:hover {
+	color: #FF5252;
 	border-color: #000;
 	border-radius: 2px;
 	transform: scaleY(1.2);
