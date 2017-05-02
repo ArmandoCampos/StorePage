@@ -368,9 +368,13 @@ function btn_nxt(){
 		}
 	}
 	if(quant == 6){
-		var custom = getByID("quantcustom").value;
+		var custom = getByID("i_quant").value;
 		if(custom == "")msg = 7;
-		if(!isNumber(custom))msg = 7;
+		if(!isNumber(custom)){
+			msg = 7;
+		}else{
+			if(custom <= 0)msg = 7;
+		}
 		if(msg == 7)notif = true;
 	}
 	switch(msg){
@@ -473,6 +477,12 @@ function node_color_activate(radsID, radID){
 }
 
 function btn_submit(){
+	// Notification: Invalid.
+	if(SYSTEM.ALARM.alarms[1].time == NONE){
+		notif_invalidsub();
+	}
+	
+	SYSTEM.ALARM.set(1, 10, notif_invalidsub, NONE);
 	return false;
 }
 
@@ -481,6 +491,12 @@ function btn_submit(){
 */
 function notif_invalid(){
 	var notif = $('#notif_invalid');
+	notif.toggleClass("invalid_off");
+	notif.toggleClass("invalid_on");
+}
+
+function notif_invalidsub(){
+	var notif = $('#notif_invalidsub');
 	notif.toggleClass("invalid_off");
 	notif.toggleClass("invalid_on");
 }
@@ -531,7 +547,7 @@ function form_update(){
 			}
 			// Display Price and Item Requests
 			var num = rad_quant_get(quant);
-			if(!isNumber(String(num))){
+			if(!isNumber(String(num)) || num <= 0){
 				set_text("notif_invalid", "Custom Quantity is invalid...");
 				// Notification: Invalid.
 				if(SYSTEM.ALARM.alarms[1].time == NONE){
@@ -565,4 +581,6 @@ function form_update(){
 			X- Submit Button
 		}
 	}
+
+	- Second Invalid Notification
 */

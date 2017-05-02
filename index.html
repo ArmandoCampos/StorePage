@@ -28,10 +28,10 @@
 
 <div class="para centext">Test Store</div>
 
-<div class="area" style="padding: 10px;">
-	<img class="resize_m hover" onclick="btn_setitem(0);" src="assets/shirtsketch0white.png" />
-	<img class="resize_s hover" onclick="btn_setitem(1);" src="assets/shirtsketch1white.png" />
-	<img class="resize_s hover" onclick="btn_setitem(2);" src="assets/shirtsketch2white.png" />
+<div class="area" style="padding: 10px; margin-bottom: 6px;">
+	<div class="node_item" onclick="btn_setitem(0);"><img src="assets/shirtsketch0white.png"/><span class="para">T-Shirt</span></div>
+	<div class="node_item" onclick="btn_setitem(1);"><img src="assets/shirtsketch1white.png"/><span class="para">V-Neck</span></div>
+	<div class="node_item" onclick="btn_setitem(2);"><img src="assets/shirtsketch2white.png"/><span class="para">Long Sleeve</span></div>
 </div>
 
 <div id="storeform" class="form_off">
@@ -94,13 +94,17 @@
 	<div class="divider">...</div>
 	<span id="selitem" class="additional" style="display: block;">[ test ]</span>
 	<input class="btn" onclick="return btn_submit();" class="sub" type="submit" value="ADD TO CART">
-	<span class="notif invalid_off" id="notif_invalidsub">please fill all required fields...</span>
+	<span class="notif invalid_off" id="notif_invalidsub">Please fill All required fields...</span>
 	</div>
 	</fieldset>
 </form>
 </div>
 </div>
 
+</div>
+
+<div id="footer">
+	©2017 Armando Campos
 </div>
 
 <!-- Import -->
