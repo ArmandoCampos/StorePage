@@ -13,7 +13,7 @@
 <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
 <link rel="icon" type="image/png" href="favicon-196x196.png" sizes="196x196">
 </head>
-<body onload="init(3); rad_default(0, 0); rad_default(1, 0); rad_default(2, 0);">
+<body onload="init(4); rad_default(0, 0); rad_default(1, 0); rad_default(2, 0);">
 
 <div id="wrapper">
 
@@ -29,9 +29,11 @@
 <div class="para centext">Test Store</div>
 
 <div class="area" style="padding: 10px; margin-bottom: 6px;">
-	<div class="node_item" onclick="btn_setitem(0);"><img src="assets/shirtsketch0white.png"/><span class="para">T-Shirt</span></div>
-	<div class="node_item" onclick="btn_setitem(1);"><img src="assets/shirtsketch1white.png"/><span class="para">V-Neck</span></div>
-	<div class="node_item" onclick="btn_setitem(2);"><img src="assets/shirtsketch2white.png"/><span class="para">Long Sleeve</span></div>
+	<div class="rads" id="rads3">
+		<div class="rad rad_off" id="rad30"><div class="node_item" onclick="btn_setitem(0);"><img src="assets/shirtsketch0white.png"/><span class="para">T-Shirt</span></div></div>
+		<div class="rad rad_off" id="rad31"><div class="node_item" onclick="btn_setitem(1);"><img src="assets/shirtsketch1white.png"/><span class="para">V-Neck</span></div></div>
+		<div class="rad rad_off" id="rad32"><div class="node_item" onclick="btn_setitem(2);"><img src="assets/shirtsketch2white.png"/><span class="para">Long Sleeve</span></div></div>
+	</div>
 </div>
 
 <div id="storeform" class="form_off">

@@ -191,18 +191,22 @@ fieldset {
 	text-align: center;
 	padding: 4px;
 	margin: 2px 2px;
-	transition: border-color 0.2s, color 0.2s;
+	transition: border-color 0.2s, color 0.2s, transform 0.2s;
 	color: #000;
+	transform: rotate(6deg);
+	box-shadow: 6px 6px 2px #212121;
 }
 
 .node_item:hover {
+	z-index: 1;
 	cursor: pointer;
 	border-color: red;
 	color: red;
+	transform: rotate(0deg);
 }
 
-.node_item > span {
-	
+.rad_on > .node_color {
+	transform: rotate(60deg);
 }
 
 .node_item > img {
@@ -232,6 +236,7 @@ fieldset {
 
 .rad_on > .node_color {
 	border-color: #000;
+	transform: scale(0.8);
 }
 
 .bg_white {

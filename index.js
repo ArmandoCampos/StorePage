@@ -306,8 +306,8 @@ function get_text(id){
 // - - - - - - - - - - - - - - - - - - -
 // [ - - Initialize System - - ]
 var SYSTEM = {
-	ALARM: new alarm_system(6),
-	RADS:  [NONE, NONE],
+	ALARM: new alarm_system(4),
+	RADS:  [NONE, NONE, NONE, NONE],
 	ITEM: NONE
 }
 
@@ -477,12 +477,50 @@ function node_color_activate(radsID, radID){
 }
 
 function btn_submit(){
-	// Notification: Invalid.
-	if(SYSTEM.ALARM.alarms[1].time == NONE){
-		notif_invalidsub();
+	var notif = false;
+	var msg = NONE;
+	// Check Quantity
+	var quant = SYSTEM.RADS[2].find();
+	if(quant == 6){
+		var custom = getByID("i_quant").value;
+		if(custom == "")msg = 1;
+		if(!isNumber(custom)){
+			msg = 1;
+		}else{
+			if(custom <= 0)msg = 1;
+		}
 	}
-	
-	SYSTEM.ALARM.set(1, 10, notif_invalidsub, NONE);
+	// Check Name Input
+	var name = get_text("i_name");
+	if(name == "" || isNumber(name)){
+		if(msg == 1){
+			msg = 2;
+		}else{
+			msg = 0;
+		}
+	}
+	if(msg != NONE){
+		notif = true;
+		switch(msg){
+			case 0:
+				set_text("notif_invalidsub", "Name is invalid...");
+				break;
+			case 1:
+				set_text("notif_invalidsub", "Custom Quantity is invalid...");
+				break;
+			case 2:
+				set_text("notif_invalidsub", "Quantity and Name is invalid...");
+				break;
+		}
+	}
+	if(notif){
+		// Notification: Invalid.
+		if(SYSTEM.ALARM.alarms[1].time == NONE){
+			notif_invalidsub();
+		}
+		
+		SYSTEM.ALARM.set(1, 10, notif_invalidsub, NONE);
+	}
 	return false;
 }
 
@@ -548,13 +586,15 @@ function form_update(){
 			// Display Price and Item Requests
 			var num = rad_quant_get(quant);
 			if(!isNumber(String(num)) || num <= 0){
-				set_text("notif_invalid", "Custom Quantity is invalid...");
-				// Notification: Invalid.
-				if(SYSTEM.ALARM.alarms[1].time == NONE){
-					notif_invalid();
+				if(num != ""){
+					set_text("notif_invalid", "Custom Quantity is invalid...");
+					// Notification: Invalid.
+					if(SYSTEM.ALARM.alarms[1].time == NONE){
+						notif_invalid();
+					}
+					
+					SYSTEM.ALARM.set(1, 10, notif_invalid, NONE);
 				}
-				
-				SYSTEM.ALARM.set(1, 10, notif_invalid, NONE);
 			}
 			// Check if not number
 			var price = 8*num;
