@@ -471,6 +471,16 @@ function item_type_get(itemID){
 	return name;
 }
 
+function item_price_get(itemID){
+	var price = 0;
+	switch(itemID){
+		case 0: price = 8; break;
+		case 1: price = 10; break;
+		case 2: price = 12; break;
+	}
+	return price;
+}
+
 function node_color_activate(radsID, radID){
 	rad_activate(radsID, radID);
 	form_update();
@@ -597,7 +607,7 @@ function form_update(){
 				}
 			}
 			// Check if not number
-			var price = 8*num;
+			var price = item_price_get(SYSTEM.ITEM)*num;
 			var col = rad_color_get(SYSTEM.RADS[1].find());
 			var type = item_type_get(SYSTEM.ITEM);
 			set_text("selitem", "[ $"+String(price)+" - "+String(num)+" "+String(col)+" "+String(type)+"(s)"+" ]");
@@ -608,6 +618,7 @@ function form_update(){
 /*
 	Page Layout:
 	X- Navigation
+	X- Item Info Display
 	X- Item Selection
 	- Selection Form {
 		X- Display Item
@@ -622,5 +633,5 @@ function form_update(){
 		}
 	}
 
-	- Second Invalid Notification
+	X- Second Invalid Notification
 */
