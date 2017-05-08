@@ -303,6 +303,14 @@ function get_text(id){
 	return String(getByID(id).value);
 }
 
+function save(key, value){
+	localStorage[key] = value;
+}
+
+function load(key){
+	return localStorage[key];
+}
+
 // - - - - - - - - - - - - - - - - - - -
 // [ - - Initialize System - - ]
 var SYSTEM = {
@@ -530,7 +538,10 @@ function btn_submit(){
 		}
 		
 		SYSTEM.ALARM.set(1, 10, notif_invalidsub, NONE);
+	}else{
+		document.location.href = "cart.html";
 	}
+
 	return false;
 }
 
@@ -594,7 +605,7 @@ function form_update(){
 				classOn("quantcustom", "hide");
 			}
 			// Display Price and Item Requests
-			var num = rad_quant_get(quant);
+			var num = rad_quant_get(quant), numsave = true;
 			if(!isNumber(String(num)) || num <= 0){
 				if(num != ""){
 					set_text("notif_invalid", "Custom Quantity is invalid...");
@@ -605,11 +616,17 @@ function form_update(){
 					
 					SYSTEM.ALARM.set(1, 10, notif_invalid, NONE);
 				}
+				numsave = false;
 			}
+			if(numsave)save("num", num);
 			// Check if not number
 			var price = item_price_get(SYSTEM.ITEM)*num;
-			var col = rad_color_get(SYSTEM.RADS[1].find());
+			save("price", price);
+			var colnum = SYSTEM.RADS[1].find();
+			var col = rad_color_get(colnum);
+			save("col", colnum);
 			var type = item_type_get(SYSTEM.ITEM);
+			save("type", SYSTEM.ITEM);
 			set_text("selitem", "[ $"+String(price)+" - "+String(num)+" "+String(col)+" "+String(type)+"(s)"+" ]");
 			break;
 	}

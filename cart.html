@@ -1,0 +1,42 @@
+<!DOCTYPE HTMl>
+<html>
+<head>
+<title>Test Store</title>
+<style>
+@import url(index.css);
+@import url('https://fonts.googleapis.com/css?family=Merriweather');
+@import url('https://fonts.googleapis.com/css?family=Libre+Baskerville');
+@import url('https://fonts.googleapis.com/css?family=Enriqueta');
+@import url('https://fonts.googleapis.com/css?family=Fjalla+One');
+</style>
+<link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
+<link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="favicon-196x196.png" sizes="196x196">
+</head>
+<body onload="page_load();">
+
+<div id="wrapper">
+
+<div class="area" style="padding: 0px; margin: 6px 0px;">
+	<div class="nav">
+		<ul>
+			<li class="navb" onclick="navigate(0);">Home</li>
+			<li class="navb" onclick="navigate(1);">About</li>
+		</ul>
+	</div>
+</div>
+
+<div class="para centext tooltip">Cart<span class="tooltiptext" id="ttip_item"></span></div>
+<img class="resize_s centered" id="displayshirt" src="assets/shirtsketch0white.png" />
+
+</div>
+
+<div class="additional" id="footer">
+	©2017 Armando Campos
+</div>
+
+<!-- Import -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="cart.js"></script>
+</body>
+</html>
