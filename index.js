@@ -423,13 +423,7 @@ function btn_nxt(){
 		return false;
 	}
 	// Approve Name
-	var sz = "Small";
-	switch(size){
-		case 1: sz = "Medium"; break;
-		case 2: sz = "Large"; break;
-		case 3: sz = "XLarge"; break;
-		case 4: sz = "2XLarge"; break;
-	}
+	var sz = rad_size_get(size);
 	// Reveal rest of Form
 	classOn("purchaseform", "form_on");
 	classOff("purchaseform", "form_off");
@@ -438,6 +432,18 @@ function btn_nxt(){
 	form_update();
 	return false;
 	//alert("Name Submitted: "+name+", Size:"+sz);
+}
+
+function rad_size_get(sizeID){
+	var name = "Small";
+	switch(sizeID){
+		case 0: name = "Small"; break;
+		case 1: name = "Medium"; break;
+		case 2: name = "Large"; break;
+		case 3: name = "XLarge"; break;
+		case 4: name = "2XLarge"; break;
+	}
+	return name;
 }
 
 function rad_color_get(colorID){
@@ -618,18 +624,31 @@ function form_update(){
 				}
 				numsave = false;
 			}
-			if(numsave)save("num", num);
+			var nsave = NONE;
+			if(numsave)nsave = num;
 			// Check if not number
 			var price = item_price_get(SYSTEM.ITEM)*num;
-			save("price", price);
+			//save("price", price);
 			var colnum = SYSTEM.RADS[1].find();
 			var col = rad_color_get(colnum);
-			save("col", colnum);
+			//save("col", colnum);
 			var type = item_type_get(SYSTEM.ITEM);
-			save("type", SYSTEM.ITEM);
-			set_text("selitem", "[ $"+String(price)+" - "+String(num)+" "+String(col)+" "+String(type)+"(s)"+" ]");
+			//save("type", SYSTEM.ITEM);
+			var sznum = SYSTEM.RADS[0].find();
+			var sz = rad_size_get(sznum);
+			//alert("size:"+String(sznum));
+			form_save(nsave, price, colnum, SYSTEM.ITEM, sznum);
+			set_text("selitem", "[ $"+String(price)+" - "+String(num)+" "+String(sz)+" "+String(col)+" "+String(type)+"(s)"+" ]");
 			break;
 	}
+}
+
+function form_save(num, price, col, type, size){
+	if(num != NONE)save("num", num);
+	if(price != NONE)save("price", price);
+	if(col != NONE)save("col", col);
+	if(type != NONE)save("type", type);
+	if(size != NONE)save("size", size);
 }
 
 /*
@@ -648,6 +667,10 @@ function form_update(){
 			X- Order Text
 			X- Submit Button
 		}
+	}
+	- Cart {
+		X- Item Info Display
+		X- Display Item
 	}
 
 	X- Second Invalid Notification

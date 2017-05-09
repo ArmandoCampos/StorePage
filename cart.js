@@ -311,6 +311,12 @@ function load(key){
 	return localStorage[key];
 }
 
+function load_def(key, def){
+	var got = localStorage[key];
+	if(got == undefined)return def;
+	return got;
+}
+
 //
 
 
@@ -328,6 +334,16 @@ function navigate(pageID){
 	document.location.href = path;
 }
 
+function rad_size_get(sizeID){
+	var name = "Small";
+	switch(sizeID){
+		case 0: name = "Small"; break;
+		case 1: name = "Medium"; break;
+		case 2: name = "Large"; break;
+		case 3: name = "XLarge"; break;
+		case 4: name = "2XLarge"; break;
+	}
+}
 
 function rad_color_get(colorID){
 	// Returns string of color name
@@ -367,8 +383,13 @@ function item_type_get(itemID){
 
 
 function page_load(){
-	var col = load("col"), type = load("type");
-	var str = "[ $"+load("price")+" - "+load("num")+" "+rad_color_get(col)+" "+item_type_get(type)+"(s)"+" ]";
-	set_text("ttip_item", str);
-	imgChange("displayshirt", "assets/shirtsketch"+String(type)+String(rad_color_get(col))+".png");
+	var col = load("col"), type = load_def("type", "EMPTY"), sz = load("size");
+	if(type == "EMPTY"){
+		set_text("ttip_item", "[ EMPTY CART ]");
+		imgChange("displayshirt", "#");
+	}else{
+		var str = "[ $"+load("price")+" - "+load("num")+" "+rad_size_get(sz)+" "+rad_color_get(col)+" "+item_type_get(type)+"(s)"+" ]";
+		set_text("ttip_item", str);
+		imgChange("displayshirt", "assets/shirtsketch"+String(type)+String(rad_color_get(col))+".png");
+	}
 }
