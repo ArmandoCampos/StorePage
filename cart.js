@@ -337,12 +337,18 @@ function navigate(pageID){
 function rad_size_get(sizeID){
 	var name = "Small";
 	switch(sizeID){
+		case "0":
 		case 0: name = "Small"; break;
+		case "1":
 		case 1: name = "Medium"; break;
+		case "2":
 		case 2: name = "Large"; break;
+		case "3":
 		case 3: name = "XLarge"; break;
+		case "4":
 		case 4: name = "2XLarge"; break;
 	}
+	return name;
 }
 
 function rad_color_get(colorID){
@@ -350,23 +356,22 @@ function rad_color_get(colorID){
 	var name = "white";
 	switch(colorID){
 		case "0":
-		case 0: name = "white"; break;
+		case 0: name = "White"; break;
 		case "1":
-		case 1: name = "red"; break;
+		case 1: name = "Red"; break;
 		case "2":
-		case 2: name = "orange"; break;
+		case 2: name = "Orange"; break;
 		case "3":
-		case 3: name = "yellow"; break;
+		case 3: name = "Yellow"; break;
 		case "4":
-		case 4: name = "green"; break;
+		case 4: name = "Green"; break;
 		case "5":
-		case 5: name = "blue"; break;
+		case 5: name = "Blue"; break;
 		case "6":
-		case 6: name = "black"; break;
+		case 6: name = "Black"; break;
 	}
 	return name;
 }
-
 
 function item_type_get(itemID){
 	var name = "Shirtdefault";
@@ -380,7 +385,6 @@ function item_type_get(itemID){
 	}
 	return name;
 }
-
 
 function page_load(){
 	var col = load("col"), type = load_def("type", "EMPTY"), sz = load("size");

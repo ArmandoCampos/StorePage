@@ -27,10 +27,14 @@ fieldset {
 .area {
 	margin: 4px;
 	padding: 6px;
-	border: solid 6px #212121;
+	border: solid 2px #212121;
 	overflow: hidden;
-	box-shadow: 6px 6px 2px #212121;
-	/*background: #212121;*/
+	box-shadow: 4px 4px 2px #212121;
+	background: #FFF;
+}
+
+.checkered {
+	background-image: url("assets/checkers.png");
 }
 
 .item {
@@ -52,6 +56,11 @@ fieldset {
 .divider {
 	color: #FFF;
 	margin: 20px;
+}
+
+.divider2 {
+	color: #FFF;
+	margin: 0px;
 }
 
 .para {
@@ -201,7 +210,8 @@ fieldset {
 }
 
 .node_item {
-	border: 4px solid #000;
+	background-color: #FFF;
+	border: 2px solid #000;
 	position: relative;
 	width: 120px;
 	justify-content: center;
@@ -212,7 +222,7 @@ fieldset {
 	transition: border-color 0.2s, color 0.2s, transform 0.2s;
 	color: #000;
 	transform: rotate(6deg);
-	box-shadow: 6px 6px 2px #212121;
+	box-shadow: 4px 4px 2px #212121;
 }
 
 .node_item:hover {
@@ -285,6 +295,10 @@ fieldset {
 
 .bg_blue {
 	background-color: #2196F3;
+}
+
+.c_white {
+	color: #FFF;
 }
 
 #footer {

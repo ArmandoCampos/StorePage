@@ -495,7 +495,7 @@ function item_price_get(itemID){
 	return price;
 }
 
-function node_color_activate(radsID, radID){
+function node_activate(radsID, radID){
 	rad_activate(radsID, radID);
 	form_update();
 }
