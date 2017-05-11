@@ -4,8 +4,9 @@
 
 body {
 	background-color: #000;
-	/*font-family: 'Libre Baskerville', serif;*/
-	font-family: 'Fjalla One', sans-serif;
+	font-family: 'Libre Baskerville', serif;
+	/*font-family: 'Fjalla One', sans-serif;*/
+	/*font-family: 'Enriqueta', serif;*/
 	font-size: 24px;
 }
 
@@ -19,6 +20,22 @@ fieldset {
 }
 
 /* [ - - General Custom Classes - - ] */
+
+.fnt_enr {
+	font-family: 'Enriqueta', serif;
+}
+
+.fnt_lib {
+	font-family: 'Libre Baskerville', serif;
+}
+
+.fnt_fja {
+	font-family: 'Fjalla One', sans-serif;
+}
+
+.fnt_rob {
+	font-family: 'Roboto Condensed', sans-serif;
+}
 
 .hide {
 	display: none;
@@ -102,12 +119,13 @@ fieldset {
 }
 
 .btn {
-	border: solid 2px #757575;
+	border: solid 2px #000;
 	background: #FFF;
 	font-size: 24px;
-	color: #212121;
+	color: #000;
 	border-radius: 0px;
 	transition: color 0.2s, background 0.2s, transform 0.2s, border 0.2s;
+	font-family: 'Roboto Condensed', sans-serif;
 }
 
 .btn:hover {
@@ -158,7 +176,7 @@ fieldset {
 }
 
 .rad_on {
-	background-color: #c1c1c1;
+	
 }
 
 .rad_off {
@@ -223,6 +241,7 @@ fieldset {
 	color: #000;
 	transform: rotate(6deg);
 	box-shadow: 4px 4px 2px #212121;
+	font-family: 'Fjalla One', sans-serif;
 }
 
 .node_item:hover {
@@ -247,19 +266,20 @@ fieldset {
 .node_color {
 	padding: 2px 16px;
 	margin: 0px 2px;
-	border: 2px solid #c1c1c1;
+	border: 2px solid #000;
 	border-radius: 0px;
 	filter: brightness(100%);
 	transition: color 0.2s, border-color 0.2s, border-radius 0.2s, transform 0.1s, filter 0.2s;
 	color: #FFF;
+	font-family: 'Roboto Condensed', sans-serif;
+	font-weight: bold;
 }
 
 .node_color:hover {
-	color: #FF5252;
+	color: red;
 	border-color: #000;
 	border-radius: 2px;
 	transform: scaleY(1.2);
-	filter: brightness(80%);
 }
 
 .rad_on > .node_color {
