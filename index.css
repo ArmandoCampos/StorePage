@@ -41,6 +41,10 @@ fieldset {
 	font-family: 'Bitter', serif;
 }
 
+.fnt_ant {
+	font-family: 'Anton', sans-serif;
+}
+
 .hide {
 	display: none;
 }
@@ -130,6 +134,7 @@ fieldset {
 	border-radius: 0px;
 	transition: color 0.2s, background 0.2s, transform 0.2s, border 0.2s;
 	font-family: 'Roboto Condensed', sans-serif;
+
 }
 
 .btn:hover {
