@@ -638,7 +638,9 @@ function form_update(){
 			var sz = rad_size_get(sznum);
 			//alert("size:"+String(sznum));
 			form_save(nsave, price, colnum, SYSTEM.ITEM, sznum);
-			set_text("selitem", "[ $"+String(price)+" - "+String(num)+" "+String(sz)+" "+String(col)+" "+String(type)+"(s)"+" ]");
+			var distxt = "[ $"+String(price)+" - "+String(num)+" "+String(sz)+" "+String(col)+" "+String(type)+"(s)"+" ]";
+			set_text("displaytext", distxt);
+			set_text("selitem", distxt);
 			break;
 	}
 }
