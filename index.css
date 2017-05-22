@@ -59,7 +59,8 @@ fieldset {
 }
 
 .checkered {
-	background-image: url("assets/checkers.png");
+	/*background-image: url("assets/checkers.png");*/
+	background: #212121;
 }
 
 .item {
