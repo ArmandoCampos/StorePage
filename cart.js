@@ -381,7 +381,9 @@ function item_type_get(itemID){
 		case "1":
 		case 1: name = "V-Neck Shirt"; break;
 		case "2":
-		case 2: name = "Long Sleeve"; break;
+		case 2:
+		case "3":
+		case 3: name = "Long Sleeve"; break;
 	}
 	return name;
 }

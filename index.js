@@ -323,7 +323,7 @@ var SYSTEM = {
 	* Initialize Events.
 */
 function init(numrads){
-	this.interval = setInterval(update, 60);
+	this.interval = setInterval(update, 30);
 	//alert("hey");
 	rads_add(numrads);
 }
@@ -480,7 +480,8 @@ function item_type_get(itemID){
 	switch(itemID){
 		case 0: name = "T-Shirt"; break;
 		case 1: name = "V-Neck Shirt"; break;
-		case 2: name = "Long Sleeve"; break;
+		case 2:
+		case 3: name = "Long Sleeve"; break;
 	}
 	return name;
 }
@@ -491,6 +492,7 @@ function item_price_get(itemID){
 		case 0: price = 8; break;
 		case 1: price = 10; break;
 		case 2: price = 12; break;
+		case 3: price = 14; break;
 	}
 	return price;
 }
@@ -598,6 +600,7 @@ function form_update(){
 		case 0:
 		case 1:
 		case 2:
+		case 3:
 			classOn("storeform", "form_on");
 			classOff("storeform", "form_off");
 			// Update Display Shirt Image
