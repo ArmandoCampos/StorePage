@@ -319,7 +319,6 @@ function load_def(key, def){
 
 //
 
-
 /*
 	NAVIGATION
 */
@@ -399,3 +398,8 @@ function page_load(){
 		imgChange("displayshirt", "assets/shirtsketch"+String(type)+String(rad_color_get(col))+".png");
 	}
 }
+
+/*
+	To-Do:
+	- 
+*/
