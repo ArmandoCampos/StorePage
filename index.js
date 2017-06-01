@@ -605,7 +605,7 @@ function form_update(){
 			classOff("storeform", "form_off");
 			// Update Display Shirt Image
 			imgChange("displayshirt", "assets/shirtsketch"+String(SYSTEM.ITEM)+String(rad_color_get(SYSTEM.RADS[1].find()))+".png");
-
+			
 			var quant = SYSTEM.RADS[2].find();
 			//alert("quant:"+quant);
 			if(quant == 6){
@@ -622,7 +622,6 @@ function form_update(){
 					if(SYSTEM.ALARM.alarms[1].time == NONE){
 						notif_invalid();
 					}
-					
 					SYSTEM.ALARM.set(1, 10, notif_invalid, NONE);
 				}
 				numsave = false;
@@ -661,14 +660,13 @@ function form_save(num, price, col, type, size){
 	X- Navigation
 	X- Item Info Display
 	X- Item Selection
-	- Selection Form {
+	X- Selection Form {
 		X- Display Item
 		X- Color Selection
 		X- Size Selection
 		X- Next Button
 		- Purchase Form {
 			X- Name Input
-			- 
 			X- Order Text
 			X- Submit Button
 		}

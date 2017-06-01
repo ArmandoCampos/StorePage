@@ -91,6 +91,7 @@ fieldset {
 
 .para {
 	font-size: 16px;
+	font-family: 'Quicksand', sans-serif;
 }
 
 .hover {
@@ -134,7 +135,7 @@ fieldset {
 	color: #000;
 	border-radius: 0px;
 	transition: color 0.2s, background 0.2s, transform 0.2s, border 0.2s;
-	font-family: 'Roboto Condensed', sans-serif;
+	font-family: 'Quicksand', sans-serif;
 
 }
 
@@ -251,7 +252,7 @@ fieldset {
 	color: #000;
 	transform: rotate(6deg);
 	box-shadow: 4px 4px 2px #212121;
-	font-family: 'Fjalla One', sans-serif;
+	font-family: 'times', sans-serif;
 }
 
 .node_item:hover {
@@ -281,13 +282,14 @@ fieldset {
 	filter: brightness(100%);
 	transition: color 0.2s, border-color 0.2s, border-radius 0.2s, transform 0.1s, filter 0.2s;
 	color: #FFF;
-	font-family: 'Bitter', serif;
+	font-family: 'Quicksand', sans-serif;
+	font-weight: bolder;
 }
 
 .node_color:hover {
 	color: red;
 	border-color: #000;
-	border-radius: 2px;
+	border-radius: 6px;
 	transform: scale(1.2);
 }
 
@@ -328,6 +330,10 @@ fieldset {
 
 .c_white {
 	color: #FFF;
+}
+
+.photo {
+	width: 64px;
 }
 
 #footer {
